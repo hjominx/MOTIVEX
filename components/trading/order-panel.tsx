@@ -4,26 +4,18 @@ import { useState, useMemo } from 'react';
 import { useTradingStore, useSelectedTicker } from '@/lib/stores/trading-store';
 import { usePriceFormatter } from '@/hooks/use-market-data';
 import { getCurrencySymbol } from '@/lib/services/market-data';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Field, FieldGroup, FieldLabel } from '@/components/ui/field';
+import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from '@/components/ui/select';
-import { AlertCircle, Calculator, Info } from 'lucide-react';
 import type { OrderType, OrderSide } from '@/types/trading';
 
 const ORDER_TYPES: { value: OrderType; label: string }[] = [
-  { value: 'limit', label: '지정가' },
-  { value: 'market', label: '시장가' },
-  { value: 'stop', label: '스탑' },
+  { value: 'limit',      label: '지정가' },
+  { value: 'market',     label: '시장가' },
+  { value: 'stop',       label: '스탑' },
   { value: 'stop_limit', label: '스탑지정가' },
 ];
 
@@ -32,259 +24,169 @@ export function OrderPanel() {
   const ticker = useSelectedTicker();
   const { formatPrice } = usePriceFormatter();
 
-  const [side, setSide] = useState<OrderSide>('buy');
+  const [side, setSide]           = useState<OrderSide>('buy');
   const [orderType, setOrderType] = useState<OrderType>('limit');
-  const [price, setPrice] = useState<string>('');
-  const [quantity, setQuantity] = useState<string>('');
-  const [stopPrice, setStopPrice] = useState<string>('');
-  const [quantityPercent, setQuantityPercent] = useState<number[]>([0]);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [price, setPrice]         = useState('');
+  const [quantity, setQuantity]   = useState('');
+  const [pct, setPct]             = useState([0]);
+  const [submitting, setSubmitting] = useState(false);
 
-  // 가격이 비어있으면 현재가로 설정
   const effectivePrice = useMemo(() => {
-    if (orderType === 'market') return ticker?.price || 0;
+    if (orderType === 'market') return ticker?.price ?? 0;
     return parseFloat(price) || ticker?.price || 0;
   }, [price, ticker?.price, orderType]);
 
-  // 총 주문 금액 계산
-  const totalValue = useMemo(() => {
-    const qty = parseFloat(quantity) || 0;
-    return effectivePrice * qty;
-  }, [effectivePrice, quantity]);
+  const total      = useMemo(() => effectivePrice * (parseFloat(quantity) || 0), [effectivePrice, quantity]);
+  const feeRate    = selectedMarket === 'krx' ? 0.00015 : selectedMarket === 'crypto' ? 0.001 : 0.0025;
+  const commission = total * feeRate;
+  const currency   = getCurrencySymbol(selectedMarket ?? 'krx');
 
-  // 수수료 계산 (베타: 기본 수수료율 사용)
-  const commission = useMemo(() => {
-    const rate = selectedMarket === 'krx' ? 0.00015 : 
-                 selectedMarket === 'crypto' ? 0.001 : 0.0025;
-    return totalValue * rate;
-  }, [totalValue, selectedMarket]);
-
-  // 주문 제출
   async function handleSubmit() {
-    if (!selectedSymbol || !selectedMarket) return;
-    
-    const qty = parseFloat(quantity);
-    if (!qty || qty <= 0) return;
-    
-    if (orderType !== 'market' && (!effectivePrice || effectivePrice <= 0)) return;
-    
-    setIsSubmitting(true);
-    
-    // TODO: 실제 주문 API 연동
-    // 현재는 시뮬레이션만 수행
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    alert(`주문이 제출되었습니다!\n\n종목: ${selectedSymbol}\n${side === 'buy' ? '매수' : '매도'} ${quantity}주\n가격: ${effectivePrice}\n총액: ${totalValue.toLocaleString()}`);
-    
-    setIsSubmitting(false);
+    if (!selectedSymbol || !selectedMarket || !quantity) return;
+    setSubmitting(true);
+    await new Promise(r => setTimeout(r, 800));
+    setSubmitting(false);
     setQuantity('');
-    setPrice('');
+    setPct([0]);
   }
 
   if (!orderPanelOpen) return null;
 
-  if (!selectedSymbol) {
-    return (
-      <Card className="w-80 bg-card/50 border-border/50">
-        <CardHeader className="py-3 px-4">
-          <CardTitle className="text-sm font-medium">주문</CardTitle>
-        </CardHeader>
-        <CardContent className="px-4 pb-4">
-          <div className="text-center text-muted-foreground text-sm py-8">
-            종목을 선택해주세요
-          </div>
-        </CardContent>
-      </Card>
-    );
-  }
-
-  const currency = getCurrencySymbol(selectedMarket || 'krx');
-  const isKrx = selectedMarket === 'krx';
-
   return (
-    <Card className="w-80 bg-card/50 border-border/50 flex flex-col">
-      <CardHeader className="py-3 px-4 border-b border-border/50 shrink-0">
-        <CardTitle className="text-sm font-medium flex items-center justify-between">
-          <span>주문</span>
-          <span className="text-xs text-muted-foreground font-normal">
-            {ticker?.name || selectedSymbol}
-          </span>
-        </CardTitle>
-      </CardHeader>
+    <div className="w-64 bg-white border border-border rounded-2xl flex flex-col card-shadow overflow-hidden shrink-0">
+      {/* Side toggle */}
+      <div className="flex m-3 mb-0 rounded-xl overflow-hidden border border-border">
+        <button
+          onClick={() => setSide('buy')}
+          className={`flex-1 py-2 text-[13px] font-semibold transition-colors ${
+            side === 'buy'
+              ? 'bg-gain text-white'
+              : 'bg-transparent text-muted-foreground hover:text-foreground'
+          }`}
+        >
+          매수
+        </button>
+        <button
+          onClick={() => setSide('sell')}
+          className={`flex-1 py-2 text-[13px] font-semibold transition-colors ${
+            side === 'sell'
+              ? 'bg-loss text-white'
+              : 'bg-transparent text-muted-foreground hover:text-foreground'
+          }`}
+        >
+          매도
+        </button>
+      </div>
 
-      <CardContent className="p-4 flex-1 flex flex-col">
-        {/* 매수/매도 탭 */}
-        <Tabs value={side} onValueChange={(v) => setSide(v as OrderSide)} className="w-full">
-          <TabsList className="w-full h-10 mb-4">
-            <TabsTrigger 
-              value="buy" 
-              className="flex-1 data-[state=active]:bg-gain data-[state=active]:text-white"
-            >
-              매수
-            </TabsTrigger>
-            <TabsTrigger 
-              value="sell"
-              className="flex-1 data-[state=active]:bg-loss data-[state=active]:text-white"
-            >
-              매도
-            </TabsTrigger>
-          </TabsList>
+      <div className="flex-1 p-3 space-y-3 overflow-y-auto">
+        {/* Symbol */}
+        <div className="text-center py-1">
+          {selectedSymbol ? (
+            <>
+              <p className="text-[15px] font-semibold">{selectedSymbol}</p>
+              <p className="text-[13px] tabular-nums text-muted-foreground">
+                {currency}{formatPrice(ticker?.price ?? 0, selectedMarket ?? 'krx')}
+              </p>
+            </>
+          ) : (
+            <p className="text-[13px] text-muted-foreground">종목을 선택하세요</p>
+          )}
+        </div>
 
-          <div className="space-y-4">
-            {/* 주문 유형 */}
-            <Field>
-              <FieldLabel>주문 유형</FieldLabel>
-              <Select value={orderType} onValueChange={(v) => setOrderType(v as OrderType)}>
-                <SelectTrigger className="bg-input/50">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {ORDER_TYPES.map(type => (
-                    <SelectItem key={type.value} value={type.value}>
-                      {type.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </Field>
+        {/* Order type */}
+        <div>
+          <label className="block text-[11px] font-medium text-muted-foreground mb-1">주문 유형</label>
+          <Select value={orderType} onValueChange={(v) => setOrderType(v as OrderType)}>
+            <SelectTrigger className="h-9 text-[13px] bg-muted/50 border-border/60 rounded-xl">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent className="rounded-xl">
+              {ORDER_TYPES.map(t => (
+                <SelectItem key={t.value} value={t.value} className="text-[13px]">{t.label}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
 
-            {/* 가격 (시장가 제외) */}
-            {orderType !== 'market' && (
-              <Field>
-                <FieldLabel className="flex items-center justify-between">
-                  <span>가격</span>
-                  <button 
-                    type="button"
-                    className="text-xs text-primary hover:underline"
-                    onClick={() => setPrice(ticker?.price?.toString() || '')}
-                  >
-                    현재가
-                  </button>
-                </FieldLabel>
-                <div className="relative">
-                  <Input
-                    type="number"
-                    value={price}
-                    onChange={(e) => setPrice(e.target.value)}
-                    placeholder={formatPrice(ticker?.price || 0, selectedMarket || 'krx')}
-                    className="bg-input/50 pr-8 font-mono"
-                  />
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
-                    {currency}
-                  </span>
-                </div>
-              </Field>
-            )}
+        {/* Price */}
+        {orderType !== 'market' && (
+          <div>
+            <label className="block text-[11px] font-medium text-muted-foreground mb-1">가격</label>
+            <Input
+              type="number"
+              placeholder={String(ticker?.price ?? '')}
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              className="h-9 text-[13px] tabular-nums bg-muted/50 border-border/60 rounded-xl focus:bg-white"
+            />
+          </div>
+        )}
 
-            {/* 스탑 가격 */}
-            {(orderType === 'stop' || orderType === 'stop_limit') && (
-              <Field>
-                <FieldLabel>스탑 가격</FieldLabel>
-                <div className="relative">
-                  <Input
-                    type="number"
-                    value={stopPrice}
-                    onChange={(e) => setStopPrice(e.target.value)}
-                    placeholder="스탑 트리거 가격"
-                    className="bg-input/50 pr-8 font-mono"
-                  />
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
-                    {currency}
-                  </span>
-                </div>
-              </Field>
-            )}
+        {/* Quantity */}
+        <div>
+          <label className="block text-[11px] font-medium text-muted-foreground mb-1">수량</label>
+          <Input
+            type="number"
+            placeholder="0"
+            value={quantity}
+            onChange={(e) => setQuantity(e.target.value)}
+            className="h-9 text-[13px] tabular-nums bg-muted/50 border-border/60 rounded-xl focus:bg-white"
+          />
+        </div>
 
-            {/* 수량 */}
-            <Field>
-              <FieldLabel>수량</FieldLabel>
-              <div className="relative">
-                <Input
-                  type="number"
-                  value={quantity}
-                  onChange={(e) => setQuantity(e.target.value)}
-                  placeholder="0"
-                  className="bg-input/50 pr-8 font-mono"
-                />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
-                  {isKrx ? '주' : selectedMarket === 'crypto' ? '' : '주'}
-                </span>
-              </div>
-            </Field>
+        {/* Percent slider */}
+        <div>
+          <div className="flex justify-between text-[11px] text-muted-foreground mb-2">
+            <span>비중</span><span className="font-medium">{pct[0]}%</span>
+          </div>
+          <Slider
+            value={pct}
+            onValueChange={setPct}
+            max={100} step={5}
+            className="[&_.slider-thumb]:w-4 [&_.slider-thumb]:h-4"
+          />
+          <div className="flex justify-between mt-1">
+            {[25, 50, 75, 100].map(p => (
+              <button
+                key={p}
+                onClick={() => setPct([p])}
+                className="text-[11px] text-muted-foreground hover:text-primary transition-colors"
+              >
+                {p}%
+              </button>
+            ))}
+          </div>
+        </div>
 
-            {/* 수량 슬라이더 */}
-            <div className="space-y-2">
-              <Slider
-                value={quantityPercent}
-                onValueChange={setQuantityPercent}
-                max={100}
-                step={25}
-                className="w-full"
-              />
-              <div className="flex justify-between text-xs text-muted-foreground">
-                <button onClick={() => setQuantityPercent([0])}>0%</button>
-                <button onClick={() => setQuantityPercent([25])}>25%</button>
-                <button onClick={() => setQuantityPercent([50])}>50%</button>
-                <button onClick={() => setQuantityPercent([75])}>75%</button>
-                <button onClick={() => setQuantityPercent([100])}>100%</button>
-              </div>
+        {/* Summary */}
+        {total > 0 && (
+          <div className="rounded-xl bg-muted/50 p-3 space-y-1.5">
+            <div className="flex justify-between text-[12px]">
+              <span className="text-muted-foreground">총 금액</span>
+              <span className="font-semibold tabular-nums">{currency}{total.toLocaleString(undefined, { maximumFractionDigits: 2 })}</span>
             </div>
-
-            {/* 주문 요약 */}
-            <div className="p-3 rounded-lg bg-muted/30 space-y-2">
-              <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">주문금액</span>
-                <span className="font-mono">
-                  {currency}{totalValue.toLocaleString(undefined, { 
-                    maximumFractionDigits: isKrx ? 0 : 2 
-                  })}
-                </span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground flex items-center gap-1">
-                  수수료
-                  <Info className="w-3 h-3" />
-                </span>
-                <span className="font-mono text-muted-foreground">
-                  {currency}{commission.toLocaleString(undefined, { 
-                    maximumFractionDigits: isKrx ? 0 : 2 
-                  })}
-                </span>
-              </div>
-              <div className="border-t border-border/50 pt-2 flex justify-between text-sm font-medium">
-                <span>총 {side === 'buy' ? '결제금액' : '수령금액'}</span>
-                <span className="font-mono">
-                  {currency}{(side === 'buy' ? totalValue + commission : totalValue - commission).toLocaleString(undefined, { 
-                    maximumFractionDigits: isKrx ? 0 : 2 
-                  })}
-                </span>
-              </div>
-            </div>
-
-            {/* 주문 버튼 */}
-            <Button
-              className={`w-full h-12 text-base font-medium ${
-                side === 'buy' 
-                  ? 'bg-gain hover:bg-gain/90' 
-                  : 'bg-loss hover:bg-loss/90'
-              }`}
-              disabled={isSubmitting || !quantity || parseFloat(quantity) <= 0}
-              onClick={handleSubmit}
-            >
-              {isSubmitting ? '주문 처리중...' : side === 'buy' ? '매수' : '매도'}
-            </Button>
-
-            {/* 경고 메시지 */}
-            <div className="flex items-start gap-2 p-2 rounded bg-warning/10 text-warning text-xs">
-              <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
-              <span>
-                투자에는 원금 손실의 위험이 있습니다. 
-                신중하게 투자 결정을 내려주세요.
-              </span>
+            <div className="flex justify-between text-[12px]">
+              <span className="text-muted-foreground">수수료</span>
+              <span className="tabular-nums text-muted-foreground">{currency}{commission.toLocaleString(undefined, { maximumFractionDigits: 4 })}</span>
             </div>
           </div>
-        </Tabs>
-      </CardContent>
-    </Card>
+        )}
+      </div>
+
+      {/* Submit */}
+      <div className="p-3 pt-0">
+        <Button
+          onClick={handleSubmit}
+          disabled={submitting || !selectedSymbol || !quantity}
+          className={`w-full h-10 rounded-xl text-[14px] font-semibold text-white transition-colors disabled:opacity-40 ${
+            side === 'buy'
+              ? 'bg-gain hover:bg-gain/90'
+              : 'bg-loss hover:bg-loss/90'
+          }`}
+        >
+          {submitting ? '처리 중...' : side === 'buy' ? '매수하기' : '매도하기'}
+        </Button>
+      </div>
+    </div>
   );
 }
