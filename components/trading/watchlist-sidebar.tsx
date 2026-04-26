@@ -4,192 +4,119 @@ import { useState, useMemo } from 'react';
 import { useTradingStore } from '@/lib/stores/trading-store';
 import { usePriceFormatter } from '@/hooks/use-market-data';
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  KRX_STOCKS, 
-  US_STOCKS, 
-  CRYPTO_LIST 
-} from '@/lib/services/market-data';
-import { Search, Star, TrendingUp, TrendingDown, Plus } from 'lucide-react';
+import { KRX_STOCKS, US_STOCKS, CRYPTO_LIST } from '@/lib/services/market-data';
+import { Search } from 'lucide-react';
 import type { MarketType } from '@/types/trading';
 
-interface StockItemProps {
-  symbol: string;
-  name: string;
-  market: MarketType;
-  onClick: () => void;
-  isSelected: boolean;
-}
+const TABS = [
+  { key: 'krx',    label: '한국' },
+  { key: 'us',     label: '미국' },
+  { key: 'crypto', label: '코인' },
+] as const;
 
-function StockItem({ symbol, name, market, onClick, isSelected }: StockItemProps) {
-  const tickers = useTradingStore((state) => state.tickers);
+function StockRow({
+  symbol, name, market, onClick, isSelected,
+}: {
+  symbol: string; name: string; market: MarketType;
+  onClick: () => void; isSelected: boolean;
+}) {
+  const tickers = useTradingStore((s) => s.tickers);
   const ticker = tickers[symbol];
-  const { formatPrice, formatChange } = usePriceFormatter();
+  const { formatPrice } = usePriceFormatter();
 
-  const price = ticker?.price || 0;
-  const changePercent = ticker?.changePercent || 0;
-  const isPositive = changePercent >= 0;
+  const price = ticker?.price ?? 0;
+  const pct   = ticker?.changePercent ?? 0;
+  const up    = pct >= 0;
 
   return (
     <button
       onClick={onClick}
-      className={`w-full p-3 text-left transition-colors ${
-        isSelected 
-          ? 'bg-primary/10 border-l-2 border-primary' 
-          : 'hover:bg-accent border-l-2 border-transparent'
+      className={`w-full flex items-center justify-between px-4 py-2.5 text-left transition-colors ${
+        isSelected
+          ? 'bg-accent'
+          : 'hover:bg-muted/60'
       }`}
     >
-      <div className="flex items-center justify-between">
-        <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-2">
-            <span className="font-medium text-sm truncate">{name}</span>
-          </div>
-          <span className="text-xs text-muted-foreground">{symbol}</span>
-        </div>
-        <div className="text-right ml-2">
-          <div className="font-mono text-sm font-medium">
-            {formatPrice(price, market)}
-          </div>
-          <div className={`flex items-center justify-end gap-0.5 text-xs font-medium ${
-            isPositive ? 'text-gain' : 'text-loss'
-          }`}>
-            {isPositive ? (
-              <TrendingUp className="w-3 h-3" />
-            ) : (
-              <TrendingDown className="w-3 h-3" />
-            )}
-            {formatChange(ticker?.change || 0, changePercent)}
-          </div>
-        </div>
+      <div className="min-w-0 flex-1">
+        <p className={`text-[13px] font-medium truncate ${isSelected ? 'text-primary' : 'text-foreground'}`}>
+          {name}
+        </p>
+        <p className="text-[11px] text-muted-foreground mt-0.5">{symbol}</p>
+      </div>
+      <div className="text-right ml-3 shrink-0">
+        <p className="text-[13px] font-semibold tabular-nums text-foreground">
+          {formatPrice(price, market)}
+        </p>
+        <p className={`text-[11px] font-medium tabular-nums mt-0.5 ${up ? 'text-gain' : 'text-loss'}`}>
+          {up ? '+' : ''}{pct.toFixed(2)}%
+        </p>
       </div>
     </button>
   );
 }
 
 export function WatchlistSidebar() {
-  const { 
-    selectedSymbol, 
-    setSelectedSymbol, 
-    sidebarOpen,
-  } = useTradingStore();
-  
-  const [searchQuery, setSearchQuery] = useState('');
-  const [activeTab, setActiveTab] = useState<'krx' | 'us' | 'crypto'>('krx');
+  const { selectedSymbol, setSelectedSymbol, sidebarOpen } = useTradingStore();
+  const [query, setQuery]     = useState('');
+  const [tab, setTab]         = useState<'krx' | 'us' | 'crypto'>('krx');
 
-  // 검색 필터링
-  const filteredStocks = useMemo(() => {
-    const stocks = 
-      activeTab === 'krx' ? KRX_STOCKS :
-      activeTab === 'us' ? US_STOCKS :
-      CRYPTO_LIST;
-    
-    if (!searchQuery) return stocks;
-    
-    const query = searchQuery.toLowerCase();
-    return stocks.filter(
-      stock => 
-        stock.symbol.toLowerCase().includes(query) ||
-        stock.name.toLowerCase().includes(query)
-    );
-  }, [activeTab, searchQuery]);
+  const stocks = useMemo(() => {
+    const all = tab === 'krx' ? KRX_STOCKS : tab === 'us' ? US_STOCKS : CRYPTO_LIST;
+    if (!query) return all;
+    const q = query.toLowerCase();
+    return all.filter(s => s.symbol.toLowerCase().includes(q) || s.name.toLowerCase().includes(q));
+  }, [tab, query]);
 
   if (!sidebarOpen) return null;
 
   return (
-    <aside className="w-72 border-r border-border bg-card flex flex-col shrink-0">
-      {/* 검색 */}
+    <aside className="w-64 border-r border-border bg-sidebar flex flex-col shrink-0">
+      {/* Search */}
       <div className="p-3 border-b border-border">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
           <Input
-            placeholder="종목 검색..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-9 bg-input/50 h-9"
+            placeholder="검색"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            className="pl-8 h-8 text-[13px] bg-muted/60 border-transparent focus:border-border focus:bg-white rounded-lg"
           />
         </div>
       </div>
 
-      {/* 마켓 탭 */}
-      <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as typeof activeTab)} className="flex-1 flex flex-col">
-        <TabsList className="w-full h-10 rounded-none border-b border-border bg-transparent p-0">
-          <TabsTrigger 
-            value="krx" 
-            className="flex-1 rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent"
+      {/* Tabs — Apple segmented control style */}
+      <div className="flex gap-1 p-2 border-b border-border">
+        {TABS.map((t) => (
+          <button
+            key={t.key}
+            onClick={() => setTab(t.key)}
+            className={`flex-1 py-1 text-[12px] font-medium rounded-md transition-colors ${
+              tab === t.key
+                ? 'bg-white text-foreground shadow-sm'
+                : 'text-muted-foreground hover:text-foreground'
+            }`}
           >
-            한국
-          </TabsTrigger>
-          <TabsTrigger 
-            value="us"
-            className="flex-1 rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent"
-          >
-            미국
-          </TabsTrigger>
-          <TabsTrigger 
-            value="crypto"
-            className="flex-1 rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent"
-          >
-            코인
-          </TabsTrigger>
-        </TabsList>
-
-        <ScrollArea className="flex-1">
-          <TabsContent value="krx" className="m-0">
-            <div className="divide-y divide-border/50">
-              {filteredStocks.map((stock) => (
-                <StockItem
-                  key={stock.symbol}
-                  symbol={stock.symbol}
-                  name={stock.name}
-                  market={stock.market}
-                  onClick={() => setSelectedSymbol(stock.symbol, stock.market)}
-                  isSelected={selectedSymbol === stock.symbol}
-                />
-              ))}
-            </div>
-          </TabsContent>
-          
-          <TabsContent value="us" className="m-0">
-            <div className="divide-y divide-border/50">
-              {filteredStocks.map((stock) => (
-                <StockItem
-                  key={stock.symbol}
-                  symbol={stock.symbol}
-                  name={stock.name}
-                  market={stock.market}
-                  onClick={() => setSelectedSymbol(stock.symbol, stock.market)}
-                  isSelected={selectedSymbol === stock.symbol}
-                />
-              ))}
-            </div>
-          </TabsContent>
-          
-          <TabsContent value="crypto" className="m-0">
-            <div className="divide-y divide-border/50">
-              {filteredStocks.map((stock) => (
-                <StockItem
-                  key={stock.symbol}
-                  symbol={stock.symbol}
-                  name={stock.name}
-                  market={stock.market}
-                  onClick={() => setSelectedSymbol(stock.symbol, stock.market)}
-                  isSelected={selectedSymbol === stock.symbol}
-                />
-              ))}
-            </div>
-          </TabsContent>
-        </ScrollArea>
-      </Tabs>
-
-      {/* 관심종목 추가 버튼 */}
-      <div className="p-3 border-t border-border">
-        <Button variant="outline" size="sm" className="w-full gap-2">
-          <Plus className="w-4 h-4" />
-          관심종목 추가
-        </Button>
+            {t.label}
+          </button>
+        ))}
       </div>
+
+      {/* List */}
+      <ScrollArea className="flex-1">
+        <div className="py-1">
+          {stocks.map((s) => (
+            <StockRow
+              key={s.symbol}
+              symbol={s.symbol}
+              name={s.name}
+              market={s.market}
+              onClick={() => setSelectedSymbol(s.symbol, s.market)}
+              isSelected={selectedSymbol === s.symbol}
+            />
+          ))}
+        </div>
+      </ScrollArea>
     </aside>
   );
 }
