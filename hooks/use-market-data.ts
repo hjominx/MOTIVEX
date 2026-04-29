@@ -6,11 +6,16 @@ import {
   generateAllTickers, 
   generateTickerData, 
   generateOrderBook,
+  formatPrice as formatMarketPrice,
+  formatChange as formatMarketChange,
+  formatVolume as formatMarketVolume,
   KRX_STOCKS,
   US_STOCKS,
   CRYPTO_LIST
 } from '@/lib/services/market-data';
 import type { MarketType } from '@/types/trading';
+
+const MARKET_SYMBOLS = [...KRX_STOCKS, ...US_STOCKS, ...CRYPTO_LIST];
 
 // 시세 데이터 시뮬레이션 훅
 // 실제 구현 시 WebSocket 또는 SSE 연동
@@ -24,8 +29,8 @@ export function useMarketData() {
     setOrderBook,
   } = useTradingStore();
   
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const orderBookIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const orderBookIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // 초기 데이터 로드
   useEffect(() => {
@@ -35,8 +40,7 @@ export function useMarketData() {
 
     // 100ms마다 랜덤 종목 시세 업데이트 (밀리초 단위 시뮬레이션)
     intervalRef.current = setInterval(() => {
-      const allStocks = [...KRX_STOCKS, ...US_STOCKS, ...CRYPTO_LIST];
-      const randomStock = allStocks[Math.floor(Math.random() * allStocks.length)];
+      const randomStock = MARKET_SYMBOLS[Math.floor(Math.random() * MARKET_SYMBOLS.length)];
       
       const newData = generateTickerData(randomStock.symbol, randomStock.market);
       updateTicker(randomStock.symbol, newData);
@@ -45,6 +49,7 @@ export function useMarketData() {
     return () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
+        intervalRef.current = null;
       }
       setIsConnected(false);
     };
@@ -53,6 +58,10 @@ export function useMarketData() {
   // 선택된 종목의 호가 데이터 업데이트
   useEffect(() => {
     if (!selectedSymbol || !selectedMarket) {
+      if (orderBookIntervalRef.current) {
+        clearInterval(orderBookIntervalRef.current);
+        orderBookIntervalRef.current = null;
+      }
       setOrderBook(null);
       return;
     }
@@ -78,6 +87,7 @@ export function useMarketData() {
     return () => {
       if (orderBookIntervalRef.current) {
         clearInterval(orderBookIntervalRef.current);
+        orderBookIntervalRef.current = null;
       }
     };
   }, [selectedSymbol, selectedMarket, setOrderBook]);
@@ -86,7 +96,7 @@ export function useMarketData() {
 // 특정 종목 구독 훅
 export function useSubscribeSymbol(symbol: string | null, market: MarketType | null) {
   const updateTicker = useTradingStore((state) => state.updateTicker);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
     if (!symbol || !market) return;
@@ -100,6 +110,7 @@ export function useSubscribeSymbol(symbol: string | null, market: MarketType | n
     return () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
+        intervalRef.current = null;
       }
     };
   }, [symbol, market, updateTicker]);
@@ -108,43 +119,22 @@ export function useSubscribeSymbol(symbol: string | null, market: MarketType | n
 // 시세 포맷팅 유틸리티
 export function usePriceFormatter() {
   const formatPrice = useCallback((price: number, market: MarketType): string => {
-    if (market === 'krx') {
-      return new Intl.NumberFormat('ko-KR').format(Math.round(price));
-    }
-    
-    if (market === 'crypto' && price < 1) {
-      return price.toFixed(4);
-    }
-    
-    return new Intl.NumberFormat('en-US', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    }).format(price);
+    return formatMarketPrice(price, market);
   }, []);
 
-  const formatChange = useCallback((change: number, changePercent: number): string => {
-    const sign = change >= 0 ? '+' : '';
-    return `${sign}${changePercent.toFixed(2)}%`;
+  const formatChange = useCallback((change: number, changePercent: number, market: MarketType = 'krx'): string => {
+    return formatMarketChange(change, changePercent, market);
   }, []);
 
   const formatVolume = useCallback((volume: number): string => {
-    if (volume >= 1000000000) {
-      return (volume / 1000000000).toFixed(2) + 'B';
-    }
-    if (volume >= 1000000) {
-      return (volume / 1000000).toFixed(2) + 'M';
-    }
-    if (volume >= 1000) {
-      return (volume / 1000).toFixed(2) + 'K';
-    }
-    return volume.toString();
+    return formatMarketVolume(volume);
   }, []);
 
   return { formatPrice, formatChange, formatVolume };
 }
 
 // 차트 데이터 훅
-export function useChartData(symbol: string | null, interval: string = '1d') {
+export function useChartData(symbol: string | null) {
   // 캔들스틱 데이터 생성은 별도 API 또는 서비스에서 처리
   // 여기서는 기본 구조만 제공
   return {

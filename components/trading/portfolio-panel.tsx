@@ -1,9 +1,9 @@
 'use client';
 
 import { useMemo } from 'react';
-import { useTradingStore, usePortfolioSummary } from '@/lib/stores/trading-store';
+import { useTradingStore } from '@/lib/stores/trading-store';
 import { usePriceFormatter } from '@/hooks/use-market-data';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
@@ -16,7 +16,7 @@ import {
   AlertCircle,
   Wallet
 } from 'lucide-react';
-import type { Order, Position } from '@/types/trading';
+import type { Order, Position, TickerData } from '@/types/trading';
 
 // 모의 포지션 데이터
 const MOCK_POSITIONS: Position[] = [
@@ -108,46 +108,53 @@ const MOCK_ORDERS: Order[] = [
   },
 ];
 
+function buildPortfolioSnapshot(tickers: Record<string, TickerData>) {
+  const positions = MOCK_POSITIONS.map((position) => {
+    const ticker = tickers[position.symbol];
+    const currentPrice = ticker?.price || position.current_price || 0;
+    const unrealizedPnl = (currentPrice - position.avg_cost) * position.quantity;
+    const unrealizedPnlPercent = position.avg_cost > 0
+      ? ((currentPrice - position.avg_cost) / position.avg_cost) * 100
+      : 0;
+
+    return {
+      ...position,
+      current_price: currentPrice,
+      unrealized_pnl: unrealizedPnl,
+      unrealized_pnl_percent: unrealizedPnlPercent,
+    };
+  });
+
+  const totalValue = positions.reduce((sum, position) => {
+    return sum + (position.current_price || 0) * position.quantity;
+  }, 0);
+
+  const totalCost = positions.reduce((sum, position) => {
+    return sum + position.avg_cost * position.quantity;
+  }, 0);
+
+  const totalPnl = positions.reduce((sum, position) => sum + (position.unrealized_pnl || 0), 0);
+  const totalPnlPercent = totalCost > 0 ? (totalPnl / totalCost) * 100 : 0;
+
+  return {
+    positions,
+    totalValue,
+    totalCost,
+    totalPnl,
+    totalPnlPercent,
+    isPositive: totalPnl >= 0,
+  };
+}
+
 export function PortfolioPanel() {
   const { setSelectedSymbol, tickers } = useTradingStore();
   const { formatPrice } = usePriceFormatter();
 
   // 실시간 가격으로 포지션 업데이트
-  const positions = useMemo(() => {
-    return MOCK_POSITIONS.map(pos => {
-      const ticker = tickers[pos.symbol];
-      const currentPrice = ticker?.price || pos.current_price || 0;
-      const unrealizedPnl = (currentPrice - pos.avg_cost) * pos.quantity;
-      const unrealizedPnlPercent = pos.avg_cost > 0 
-        ? ((currentPrice - pos.avg_cost) / pos.avg_cost) * 100 
-        : 0;
-      
-      return {
-        ...pos,
-        current_price: currentPrice,
-        unrealized_pnl: unrealizedPnl,
-        unrealized_pnl_percent: unrealizedPnlPercent,
-      };
-    });
-  }, [tickers]);
-
-  // 총 포트폴리오 가치 계산
-  const totalValue = useMemo(() => {
-    return positions.reduce((sum, pos) => {
-      return sum + (pos.current_price || 0) * pos.quantity;
-    }, 0);
-  }, [positions]);
-
-  const totalPnl = useMemo(() => {
-    return positions.reduce((sum, pos) => sum + (pos.unrealized_pnl || 0), 0);
-  }, [positions]);
-
-  const totalCost = useMemo(() => {
-    return positions.reduce((sum, pos) => sum + pos.avg_cost * pos.quantity, 0);
-  }, [positions]);
-
-  const totalPnlPercent = totalCost > 0 ? (totalPnl / totalCost) * 100 : 0;
-  const isPositive = totalPnl >= 0;
+  const { positions, totalValue, totalPnl, totalPnlPercent, isPositive } = useMemo(
+    () => buildPortfolioSnapshot(tickers),
+    [tickers]
+  );
 
   return (
     <Card className="bg-card/50 border-border/50">

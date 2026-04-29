@@ -9,8 +9,40 @@ import type {
   Order,
   WatchlistGroup,
   WatchlistItem,
-  UserProfile
+  UserProfile,
+  PortfolioSummary
 } from '@/types/trading';
+
+function calculatePortfolioSummary(
+  positions: Position[],
+  tickers: Record<string, TickerData>
+): PortfolioSummary {
+  let totalValue = 0;
+  let totalCost = 0;
+
+  positions.forEach((position) => {
+    const ticker = tickers[position.symbol];
+    const currentPrice = ticker?.price ?? position.current_price ?? 0;
+    const value = currentPrice * position.quantity;
+    const cost = position.avg_cost * position.quantity;
+
+    totalValue += value;
+    totalCost += cost;
+  });
+
+  const totalPnl = totalValue - totalCost;
+  const totalPnlPercent = totalCost > 0 ? (totalPnl / totalCost) * 100 : 0;
+
+  return {
+    totalValue,
+    totalCost,
+    totalPnl,
+    totalPnlPercent,
+    dayPnl: 0,
+    dayPnlPercent: 0,
+    positions,
+  };
+}
 
 interface TradingState {
   // 사용자 정보
@@ -131,39 +163,13 @@ export const useTradingStore = create<TradingState>((set) => ({
 
 // 실시간 시세 업데이트용 셀렉터
 export const useSelectedTicker = () => {
-  const selectedSymbol = useTradingStore((state) => state.selectedSymbol);
-  const tickers = useTradingStore((state) => state.tickers);
-  
-  if (!selectedSymbol) return null;
-  return tickers[selectedSymbol] || null;
+  return useTradingStore((state) => {
+    if (!state.selectedSymbol) return null;
+    return state.tickers[state.selectedSymbol] ?? null;
+  });
 };
 
 // 포트폴리오 요약용 셀렉터
 export const usePortfolioSummary = () => {
-  const positions = useTradingStore((state) => state.positions);
-  const tickers = useTradingStore((state) => state.tickers);
-  
-  let totalValue = 0;
-  let totalCost = 0;
-  
-  positions.forEach((position) => {
-    const ticker = tickers[position.symbol];
-    const currentPrice = ticker?.price || position.current_price || 0;
-    const value = currentPrice * position.quantity;
-    const cost = position.avg_cost * position.quantity;
-    
-    totalValue += value;
-    totalCost += cost;
-  });
-  
-  const totalPnl = totalValue - totalCost;
-  const totalPnlPercent = totalCost > 0 ? (totalPnl / totalCost) * 100 : 0;
-  
-  return {
-    totalValue,
-    totalCost,
-    totalPnl,
-    totalPnlPercent,
-    positionCount: positions.length
-  };
+  return useTradingStore((state) => calculatePortfolioSummary(state.positions, state.tickers));
 };
