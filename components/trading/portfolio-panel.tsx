@@ -157,19 +157,19 @@ export function PortfolioPanel() {
   );
 
   return (
-    <Card className="bg-card/50 border-border/50">
+    <Card className="panel-surface border-border/50 rounded-2xl overflow-hidden shadow-[0_18px_48px_rgba(17,24,39,0.05)]">
       {/* 포트폴리오 요약 */}
-      <CardHeader className="py-3 px-4 border-b border-border/50">
+      <CardHeader className="py-3 px-4 border-b border-border/50 bg-white/55">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-sm font-medium flex items-center gap-2">
+          <CardTitle className="text-[13px] font-semibold flex items-center gap-2 tracking-[0.12em] uppercase text-motivex-navy">
             <Wallet className="w-4 h-4" />
             내 포트폴리오
           </CardTitle>
           <div className="text-right">
-            <div className="font-mono font-bold">
+            <div className="font-mono font-semibold text-motivex-navy tracking-[-0.03em]">
               ${totalValue.toLocaleString(undefined, { maximumFractionDigits: 2 })}
             </div>
-            <div className={`text-xs font-medium flex items-center justify-end gap-1 ${
+            <div className={`text-[11px] font-medium flex items-center justify-end gap-1 mt-1 uppercase tracking-[0.08em] ${
               isPositive ? 'text-gain' : 'text-loss'
             }`}>
               {isPositive ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
@@ -181,22 +181,22 @@ export function PortfolioPanel() {
       </CardHeader>
 
       <Tabs defaultValue="positions" className="w-full">
-        <TabsList className="w-full h-10 rounded-none border-b border-border bg-transparent p-0">
+        <TabsList className="w-full h-10 rounded-none border-b border-border/50 bg-white/55 p-0">
           <TabsTrigger 
             value="positions"
-            className="flex-1 rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent"
+            className="flex-1 rounded-none border-b-2 border-transparent text-[11px] uppercase tracking-[0.14em] data-[state=active]:border-motivex-navy data-[state=active]:bg-transparent data-[state=active]:text-motivex-navy"
           >
             보유종목
           </TabsTrigger>
           <TabsTrigger 
             value="orders"
-            className="flex-1 rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent"
+            className="flex-1 rounded-none border-b-2 border-transparent text-[11px] uppercase tracking-[0.14em] data-[state=active]:border-motivex-navy data-[state=active]:bg-transparent data-[state=active]:text-motivex-navy"
           >
             미체결
           </TabsTrigger>
           <TabsTrigger 
             value="history"
-            className="flex-1 rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent"
+            className="flex-1 rounded-none border-b-2 border-transparent text-[11px] uppercase tracking-[0.14em] data-[state=active]:border-motivex-navy data-[state=active]:bg-transparent data-[state=active]:text-motivex-navy"
           >
             체결내역
           </TabsTrigger>
@@ -212,17 +212,17 @@ export function PortfolioPanel() {
                   <button
                     key={pos.id}
                     onClick={() => setSelectedSymbol(pos.symbol, pos.market)}
-                    className="w-full p-3 text-left hover:bg-accent/50 transition-colors"
+                    className="w-full p-3 text-left hover:bg-motivex-navy/5 transition-colors"
                   >
                     <div className="flex items-center justify-between">
                       <div>
-                        <div className="font-medium text-sm">{pos.name}</div>
-                        <div className="text-xs text-muted-foreground">
+                        <div className="font-medium text-sm tracking-[-0.01em]">{pos.name}</div>
+                        <div className="text-xs text-muted-foreground mt-0.5">
                           {pos.quantity} {pos.market === 'crypto' ? '' : '주'} @ {formatPrice(pos.avg_cost, pos.market)}
                         </div>
                       </div>
                       <div className="text-right">
-                        <div className="font-mono text-sm">
+                        <div className="font-mono text-sm font-medium text-motivex-navy tracking-[-0.02em]">
                           {formatPrice((pos.current_price || 0) * pos.quantity, pos.market)}
                         </div>
                         <div className={`text-xs font-medium ${isPosPositive ? 'text-gain' : 'text-loss'}`}>
@@ -302,7 +302,7 @@ function OrderStatusBadge({ status }: { status: Order['status'] }) {
   const { label, icon: Icon, variant } = config[status];
   
   return (
-    <Badge variant={variant} className="text-xs gap-1">
+    <Badge variant={variant} className="text-[10px] gap-1 uppercase tracking-[0.08em]">
       <Icon className="w-3 h-3" />
       {label}
     </Badge>

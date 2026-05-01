@@ -20,11 +20,11 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background overflow-hidden relative">
-      {/* 부드러운 배경 그래디언트 이펙트 */}
+    <div className="min-h-screen bg-background overflow-hidden relative text-foreground">
+      {/* 부드러운 배경 레이어 */}
       <div className="fixed inset-0 -z-10 pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-primary/10 via-transparent to-transparent rounded-full blur-3xl" />
-        <div className="absolute top-1/3 -left-32 w-72 h-72 bg-gradient-to-br from-secondary/8 via-transparent to-transparent rounded-full blur-3xl" />
+        <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full blur-3xl bg-[radial-gradient(circle,rgba(11,31,58,0.12)_0%,transparent_68%)]" />
+        <div className="absolute top-1/3 -left-32 w-80 h-80 rounded-full blur-3xl bg-[radial-gradient(circle,rgba(183,154,103,0.08)_0%,transparent_70%)]" />
       </div>
 
       <div className="flex items-center justify-center min-h-screen p-4">
@@ -33,22 +33,22 @@ export default function LoginPage() {
           {/* 로고 */}
           <div className="text-center mb-12">
             <Link href="/" className="inline-flex items-center gap-3 mb-8 group">
-              <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-primary p-2.5 group-hover:shadow-lg group-hover:shadow-primary/30 transition-all duration-300">
+              <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-motivex-navy p-2.5 shadow-[0_12px_30px_rgba(11,31,58,0.18)] transition-all duration-300">
                 <TrendingUp className="w-7 h-7 text-white" />
               </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent">MOTIVEX</span>
+              <span className="text-[13px] font-semibold tracking-[0.28em] text-motivex-navy">MOTIVEX</span>
             </Link>
             
-            <h1 className="text-3xl font-bold text-foreground mb-2">다시 돌아오셨네요</h1>
+            <h1 className="text-3xl font-semibold text-foreground mb-2 font-serif tracking-[-0.03em]">다시 돌아오셨네요</h1>
             <p className="text-muted-foreground">계정에 로그인하여 거래를 시작하세요</p>
           </div>
 
           {/* 로그인 카드 */}
-          <div className="relative overflow-hidden rounded-2xl border border-primary/20 bg-white shadow-lg p-8">
+          <div className="relative overflow-hidden rounded-2xl border border-border/80 bg-white/82 backdrop-blur-xl shadow-[0_18px_48px_rgba(17,24,39,0.06)] p-8">
             <form action={handleSubmit} className="relative z-10 space-y-6">
               {/* 에러 메시지 */}
               {error && (
-                <div className="flex items-start gap-3 p-4 rounded-xl bg-loss/10 border border-loss/20 text-loss text-sm animate-pulse">
+                <div className="flex items-start gap-3 p-4 rounded-xl bg-loss/10 border border-loss/20 text-loss text-sm">
                   <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
                   <span className="font-medium">{error}</span>
                 </div>
@@ -65,7 +65,7 @@ export default function LoginPage() {
                     placeholder="name@example.com"
                     autoComplete="email"
                     required
-                    className="h-11 text-sm bg-background border border-primary/20 rounded-lg focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all duration-300 placeholder:text-muted-foreground/50"
+                    className="h-11 text-sm bg-white/70 border border-border/80 rounded-xl focus:border-motivex-navy/30 focus:ring-2 focus:ring-motivex-navy/10 transition-all duration-300 placeholder:text-muted-foreground/50"
                   />
                 </div>
 
@@ -75,7 +75,7 @@ export default function LoginPage() {
                     <label className="text-sm font-semibold text-foreground">비밀번호</label>
                     <Link
                       href="/auth/forgot-password"
-                      className="text-xs text-primary hover:text-secondary transition-colors duration-300 font-medium"
+                      className="text-xs text-motivex-navy hover:text-motivex-navy/80 transition-colors duration-300 font-medium"
                     >
                       비밀번호 찾기
                     </Link>
@@ -87,12 +87,12 @@ export default function LoginPage() {
                       placeholder="비밀번호 입력"
                       autoComplete="current-password"
                       required
-                      className="h-11 text-sm bg-background border border-primary/20 rounded-lg focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all duration-300 pr-11 placeholder:text-muted-foreground/50"
+                      className="h-11 text-sm bg-white/70 border border-border/80 rounded-xl focus:border-motivex-navy/30 focus:ring-2 focus:ring-motivex-navy/10 transition-all duration-300 pr-11 placeholder:text-muted-foreground/50"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPw(!showPw)}
-                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-primary transition-colors duration-300"
+                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-motivex-navy transition-colors duration-300"
                     >
                       {showPw ? (
                         <EyeOff className="w-4 h-4" />
@@ -108,7 +108,7 @@ export default function LoginPage() {
               <Button
                 type="submit"
                 disabled={loading}
-                className="w-full h-11 text-base font-semibold rounded-lg bg-gradient-primary hover:shadow-lg hover:shadow-primary/30 text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="w-full h-11 text-base font-semibold rounded-xl bg-motivex-navy hover:bg-motivex-navy/95 text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-[0_14px_34px_rgba(11,31,58,0.18)]"
               >
                 {loading ? (
                   <>
@@ -128,13 +128,13 @@ export default function LoginPage() {
           {/* 회원가입 링크 */}
           <p className="text-center text-sm text-muted-foreground mt-8">
             계정이 없으신가요?{' '}
-            <Link href="/auth/signup" className="text-primary font-semibold hover:text-secondary transition-colors duration-300">
+            <Link href="/auth/signup" className="text-motivex-navy font-semibold hover:text-motivex-navy/80 transition-colors duration-300">
               회원가입
             </Link>
           </p>
 
           {/* 추가 도움말 */}
-          <div className="mt-8 p-4 rounded-lg border border-border bg-muted/20 text-center text-xs text-muted-foreground">
+          <div className="mt-8 p-4 rounded-xl border border-border/80 bg-white/70 text-center text-xs text-muted-foreground shadow-[0_10px_24px_rgba(17,24,39,0.04)]">
             데모 계정으로 시험해보세요. 본인 인증 없이도 제한된 기능을 사용할 수 있습니다.
           </div>
         </div>

@@ -7,7 +7,7 @@
  */
 
 import { createClient } from '@/lib/supabase/server';
-import { encrypt, decrypt, encryptOrNull, decryptOrNull } from '@/lib/crypto/encryption';
+import { encrypt, decrypt } from '@/lib/crypto/encryption';
 import type { AccountProvider } from '@/types/trading';
 
 // ─── Types ────────────────────────────────────────────────────────────────────

@@ -29,11 +29,12 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4">
-      <div className="w-full max-w-sm bg-white rounded-2xl border border-border card-shadow p-6 space-y-4">
+    <div className="min-h-screen bg-background flex items-center justify-center p-4 text-foreground">
+      <div className="w-full max-w-sm panel-surface rounded-2xl p-6 space-y-4">
         <div className="text-center">
-          <h1 className="text-[22px] font-semibold tracking-tight">비밀번호 재설정</h1>
-          <p className="text-[13px] text-muted-foreground mt-1">
+          <p className="text-[11px] uppercase tracking-[0.24em] text-motivex-navy mb-2">Recovery</p>
+          <h1 className="text-[22px] font-semibold font-serif tracking-[-0.03em]">비밀번호 재설정</h1>
+          <p className="text-[13px] text-muted-foreground mt-1 leading-6">
             가입한 이메일 주소를 입력하면 재설정 링크를 보내드립니다.
           </p>
         </div>
@@ -46,24 +47,24 @@ export default function ForgotPasswordPage() {
               type="email"
               placeholder="name@example.com"
               required
-              className="h-10 text-[14px] bg-muted/50 border-border/60 rounded-xl focus:bg-white"
+              className="h-10 text-[14px] bg-white/70 border-border/80 rounded-xl focus:bg-white focus:border-motivex-navy/20"
             />
           </div>
 
-          {error && <p className="text-[13px] text-red-600">{error}</p>}
-          {success && <p className="text-[13px] text-green-600">{success}</p>}
+          {error && <p className="text-[13px] text-loss">{error}</p>}
+          {success && <p className="text-[13px] text-gain">{success}</p>}
 
           <Button
             type="submit"
             disabled={loading}
-            className="w-full h-10 text-[14px] font-medium rounded-xl"
+            className="w-full h-10 text-[14px] font-medium rounded-xl bg-motivex-navy hover:bg-motivex-navy/95 text-white shadow-[0_14px_34px_rgba(11,31,58,0.18)]"
           >
             {loading ? '전송 중...' : '재설정 링크 보내기'}
           </Button>
         </form>
 
         <p className="text-center text-[13px] text-muted-foreground">
-          <Link href="/auth/login" className="text-primary hover:underline">로그인으로 돌아가기</Link>
+          <Link href="/auth/login" className="text-motivex-navy font-medium hover:text-motivex-navy/80">로그인으로 돌아가기</Link>
         </p>
       </div>
     </div>

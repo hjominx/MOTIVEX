@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import {
@@ -25,12 +24,12 @@ export function TradingHeader({ userEmail }: TradingHeaderProps) {
   const { isConnected, sidebarOpen, setSidebarOpen } = useTradingStore();
 
   return (
-    <header className="h-12 border-b border-border bg-white/90 backdrop-blur-xl flex items-center justify-between px-4 shrink-0 sticky top-0 z-50">
+    <header className="h-9 border-b border-border/50 bg-background/80 backdrop-blur-xl flex items-center justify-between px-2.5 shrink-0 sticky top-0 z-50">
       {/* Left */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-1.5">
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
-          className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-muted transition-colors"
+          className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-motivex-navy/5 transition-colors"
         >
           {sidebarOpen
             ? <X className="w-4 h-4 text-muted-foreground" />
@@ -38,12 +37,11 @@ export function TradingHeader({ userEmail }: TradingHeaderProps) {
         </button>
 
         <Link href="/trading" className="flex items-center gap-2 select-none">
-          <span className="text-[15px] font-semibold tracking-tight text-foreground">
-            MOTIVEX
-          </span>
+          <span className="inline-block sm:hidden w-6 h-6 leading-none rounded text-center text-[12px] font-semibold text-motivex-navy">M</span>
+          <span className="hidden sm:inline text-[11px] font-semibold tracking-[0.18em] text-motivex-navy leading-none">MOTIVEX</span>
         </Link>
 
-        <div className="hidden md:flex items-center gap-0.5 ml-2">
+        <div className="hidden lg:flex items-center gap-0.5 ml-2">
           <NavLink href="/trading" active>한국주식</NavLink>
           <NavLink href="/trading/us">미국주식</NavLink>
           <NavLink href="/trading/crypto">암호화폐</NavLink>
@@ -54,30 +52,30 @@ export function TradingHeader({ userEmail }: TradingHeaderProps) {
       {/* Right */}
       <div className="flex items-center gap-1">
         {/* Live indicator */}
-        <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium ${
+        <div className={`flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-semibold uppercase tracking-[0.12em] ${
           isConnected
-            ? 'text-gain bg-gain'
-            : 'text-loss bg-loss'
+            ? 'text-gain bg-gain/10 border border-gain/20'
+            : 'text-loss bg-loss/10 border border-loss/20'
         }`}>
           <Circle className="w-1.5 h-1.5 fill-current" />
           {isConnected ? 'LIVE' : 'OFF'}
         </div>
 
-        <Button variant="ghost" size="icon" className="w-8 h-8 relative">
+        <Button variant="ghost" size="icon" className="w-7 h-7 relative rounded-md hover:bg-motivex-navy/5">
           <Bell className="w-4 h-4 text-muted-foreground" />
-          <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-loss rounded-full" />
+          <span className="absolute top-1.25 right-1.25 w-1.5 h-1.5 bg-loss rounded-full" />
         </Button>
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 gap-1.5 px-2 rounded-lg">
-              <div className="w-6 h-6 rounded-full bg-primary flex items-center justify-center">
-                <User className="w-3.5 h-3.5 text-white" />
+            <Button variant="ghost" className="h-7 gap-1 px-2 rounded-md hover:bg-motivex-navy/5">
+              <div className="w-5 h-5 rounded-full bg-motivex-navy flex items-center justify-center">
+                <User className="w-3 h-3 text-white" />
               </div>
               <ChevronDown className="w-3 h-3 text-muted-foreground hidden sm:block" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-52 rounded-xl shadow-lg border-border/60">
+          <DropdownMenuContent align="end" className="w-52 rounded-xl shadow-[0_20px_50px_rgba(17,24,39,0.08)] border-border/60 bg-background/95 backdrop-blur-xl">
             {userEmail && (
               <>
                 <div className="px-3 py-2">
@@ -117,10 +115,10 @@ function NavLink({
   return (
     <Link
       href={href}
-      className={`px-3 py-1.5 rounded-lg text-[13px] font-medium transition-colors ${
+      className={`px-3 py-1.5 rounded-lg text-[13px] font-medium tracking-[-0.01em] transition-colors ${
         active
-          ? 'bg-accent text-primary'
-          : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+          ? 'bg-motivex-navy/5 text-motivex-navy'
+          : 'text-muted-foreground hover:text-motivex-navy hover:bg-motivex-navy/5'
       }`}
     >
       {children}

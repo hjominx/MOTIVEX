@@ -53,25 +53,25 @@ export function OrderPanel() {
   if (!orderPanelOpen) return null;
 
   return (
-    <div className="w-64 bg-white border border-border rounded-2xl flex flex-col card-shadow overflow-hidden shrink-0">
+    <div className="w-full panel-surface rounded-2xl flex flex-col overflow-hidden shrink-0 shadow-[0_18px_48px_rgba(17,24,39,0.05)]">
       {/* Side toggle */}
-      <div className="flex m-3 mb-0 rounded-xl overflow-hidden border border-border">
+      <div className="flex m-3 mb-0 rounded-xl overflow-hidden border border-border/80 bg-white/70 shadow-[0_8px_24px_rgba(17,24,39,0.03)]">
         <button
           onClick={() => setSide('buy')}
-          className={`flex-1 py-2 text-[13px] font-semibold transition-colors ${
+          className={`flex-1 py-2 text-[12px] font-semibold uppercase tracking-[0.14em] transition-colors ${
             side === 'buy'
-              ? 'bg-gain text-white'
-              : 'bg-transparent text-muted-foreground hover:text-foreground'
+              ? 'bg-motivex-navy text-white'
+              : 'bg-transparent text-muted-foreground hover:text-motivex-navy'
           }`}
         >
           매수
         </button>
         <button
           onClick={() => setSide('sell')}
-          className={`flex-1 py-2 text-[13px] font-semibold transition-colors ${
+          className={`flex-1 py-2 text-[12px] font-semibold uppercase tracking-[0.14em] transition-colors ${
             side === 'sell'
               ? 'bg-loss text-white'
-              : 'bg-transparent text-muted-foreground hover:text-foreground'
+              : 'bg-transparent text-muted-foreground hover:text-motivex-navy'
           }`}
         >
           매도
@@ -83,8 +83,8 @@ export function OrderPanel() {
         <div className="text-center py-1">
           {selectedSymbol ? (
             <>
-              <p className="text-[15px] font-semibold">{selectedSymbol}</p>
-              <p className="text-[13px] tabular-nums text-muted-foreground">
+              <p className="text-[11px] font-semibold tracking-[0.22em] uppercase text-motivex-navy">{selectedSymbol}</p>
+              <p className="text-[13px] tabular-nums text-muted-foreground mt-1.5">
                 {currency}{formatPrice(ticker?.price ?? 0, selectedMarket ?? 'krx')}
               </p>
             </>
@@ -95,9 +95,9 @@ export function OrderPanel() {
 
         {/* Order type */}
         <div>
-          <label className="block text-[11px] font-medium text-muted-foreground mb-1">주문 유형</label>
+          <label className="block text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground mb-1">주문 유형</label>
           <Select value={orderType} onValueChange={(v) => setOrderType(v as OrderType)}>
-            <SelectTrigger className="h-9 text-[13px] bg-muted/50 border-border/60 rounded-xl">
+            <SelectTrigger className="h-9 text-[13px] bg-white/70 border-border/80 rounded-xl shadow-[0_8px_18px_rgba(17,24,39,0.03)]">
               <SelectValue />
             </SelectTrigger>
             <SelectContent className="rounded-xl">
@@ -111,33 +111,33 @@ export function OrderPanel() {
         {/* Price */}
         {orderType !== 'market' && (
           <div>
-            <label className="block text-[11px] font-medium text-muted-foreground mb-1">가격</label>
+            <label className="block text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground mb-1">가격</label>
             <Input
               type="number"
               placeholder={String(ticker?.price ?? '')}
               value={price}
               onChange={(e) => setPrice(e.target.value)}
-              className="h-9 text-[13px] tabular-nums bg-muted/50 border-border/60 rounded-xl focus:bg-white"
+              className="h-9 text-[13px] tabular-nums bg-white/70 border-border/80 rounded-xl focus:bg-white shadow-[0_8px_18px_rgba(17,24,39,0.03)]"
             />
           </div>
         )}
 
         {/* Quantity */}
         <div>
-          <label className="block text-[11px] font-medium text-muted-foreground mb-1">수량</label>
+          <label className="block text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground mb-1">수량</label>
           <Input
             type="number"
             placeholder="0"
             value={quantity}
             onChange={(e) => setQuantity(e.target.value)}
-            className="h-9 text-[13px] tabular-nums bg-muted/50 border-border/60 rounded-xl focus:bg-white"
+            className="h-9 text-[13px] tabular-nums bg-white/70 border-border/80 rounded-xl focus:bg-white shadow-[0_8px_18px_rgba(17,24,39,0.03)]"
           />
         </div>
 
         {/* Percent slider */}
         <div>
           <div className="flex justify-between text-[11px] text-muted-foreground mb-2">
-            <span>비중</span><span className="font-medium">{pct[0]}%</span>
+            <span className="uppercase tracking-[0.14em]">비중</span><span className="font-medium text-motivex-navy">{pct[0]}%</span>
           </div>
           <Slider
             value={pct}
@@ -150,7 +150,7 @@ export function OrderPanel() {
               <button
                 key={p}
                 onClick={() => setPct([p])}
-                className="text-[11px] text-muted-foreground hover:text-primary transition-colors"
+                className="text-[11px] text-muted-foreground hover:text-motivex-navy transition-colors"
               >
                 {p}%
               </button>
@@ -160,7 +160,7 @@ export function OrderPanel() {
 
         {/* Summary */}
         {total > 0 && (
-          <div className="rounded-xl bg-muted/50 p-3 space-y-1.5">
+          <div className="rounded-xl bg-white/70 p-3 space-y-1.5 border border-border/60 shadow-[0_8px_24px_rgba(17,24,39,0.03)]">
             <div className="flex justify-between text-[12px]">
               <span className="text-muted-foreground">총 금액</span>
               <span className="font-semibold tabular-nums">{currency}{total.toLocaleString(undefined, { maximumFractionDigits: 2 })}</span>
@@ -178,9 +178,9 @@ export function OrderPanel() {
         <Button
           onClick={handleSubmit}
           disabled={submitting || !selectedSymbol || !quantity}
-          className={`w-full h-10 rounded-xl text-[14px] font-semibold text-white transition-colors disabled:opacity-40 ${
+          className={`w-full h-10 rounded-xl text-[13px] font-semibold tracking-[0.08em] uppercase text-white transition-colors disabled:opacity-40 ${
             side === 'buy'
-              ? 'bg-gain hover:bg-gain/90'
+              ? 'bg-motivex-navy hover:bg-motivex-navy/95'
               : 'bg-loss hover:bg-loss/90'
           }`}
         >

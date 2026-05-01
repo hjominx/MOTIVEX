@@ -26,39 +26,39 @@ export default async function HomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-background overflow-hidden">
-      {/* 부드러운 배경 그래디언트 이펙트 */}
+    <div className="min-h-screen bg-background overflow-hidden text-foreground">
+      {/* 부드러운 배경 레이어 */}
       <div className="fixed inset-0 -z-10 pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-primary/10 via-transparent to-transparent rounded-full blur-3xl" />
-        <div className="absolute top-1/3 -left-32 w-72 h-72 bg-gradient-to-br from-secondary/8 via-transparent to-transparent rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-1/3 w-96 h-96 bg-gradient-to-br from-accent/8 via-transparent to-transparent rounded-full blur-3xl" />
+        <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full blur-3xl bg-[radial-gradient(circle,rgba(11,31,58,0.12)_0%,transparent_68%)]" />
+        <div className="absolute top-1/4 -left-32 w-80 h-80 rounded-full blur-3xl bg-[radial-gradient(circle,rgba(183,154,103,0.09)_0%,transparent_70%)]" />
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 rounded-full blur-3xl bg-[radial-gradient(circle,rgba(11,31,58,0.08)_0%,transparent_72%)]" />
       </div>
 
       {/* 헤더 */}
-      <header className="border-b border-border sticky top-0 z-50 bg-background/80 backdrop-blur-xl transition-all duration-300">
+      <header className="sticky top-0 z-50 border-b border-border/70 bg-background/78 backdrop-blur-xl transition-all duration-300">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-primary p-2 group-hover:shadow-lg group-hover:shadow-primary/30 transition-all duration-300">
+            <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-motivex-navy p-2 shadow-[0_12px_30px_rgba(11,31,58,0.18)] transition-all duration-300">
               <TrendingUp className="w-6 h-6 text-white" />
             </div>
-            <span className="font-bold text-xl bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent">MOTIVEX</span>
+            <span className="font-semibold tracking-[0.28em] text-[13px] text-motivex-navy">MOTIVEX</span>
           </Link>
           
           <nav className="hidden md:flex items-center gap-8">
             {['기능', '시장', '수수료'].map((item) => (
-              <Link key={item} href={`#${item}`} className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors duration-300 relative group">
+              <Link key={item} href={`#${item}`} className="text-sm font-medium text-muted-foreground hover:text-motivex-navy transition-colors duration-300 relative group">
                 {item}
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-primary group-hover:w-full transition-all duration-300" />
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-motivex-navy group-hover:w-full transition-all duration-300" />
               </Link>
             ))}
           </nav>
           
           <div className="flex items-center gap-3">
             <Link href="/auth/login">
-              <Button variant="ghost" size="sm" className="text-primary hover:bg-primary/10">로그인</Button>
+              <Button variant="ghost" size="sm" className="text-motivex-navy hover:bg-motivex-navy/5">로그인</Button>
             </Link>
             <Link href="/auth/signup">
-              <Button size="sm" className="bg-gradient-primary hover:shadow-lg hover:shadow-primary/30 text-white transition-all">시작하기</Button>
+              <Button size="sm" className="bg-motivex-navy hover:bg-motivex-navy/95 text-white shadow-[0_12px_30px_rgba(11,31,58,0.18)] transition-all">시작하기</Button>
             </Link>
           </div>
         </div>
@@ -69,34 +69,34 @@ export default async function HomePage() {
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto text-center slide-in-up">
             {/* 배지 */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-sm mb-8 group hover:border-primary/40 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10">
-              <Flame className="w-4 h-4 text-primary animate-pulse" />
-              <span className="text-sm font-semibold text-primary">밀리초 단위 실시간 시세</span>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border/80 bg-white/70 backdrop-blur-sm mb-8 transition-all duration-300 shadow-[0_10px_30px_rgba(17,24,39,0.04)]">
+              <Flame className="w-4 h-4 text-motivex-navy" />
+              <span className="text-[13px] font-medium tracking-[0.12em] uppercase text-motivex-navy">Real-time market view</span>
               <Sparkles className="w-4 h-4 text-accent" />
             </div>
             
             {/* 메인 타이틀 */}
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight tracking-tight">
-              <span className="block text-foreground">글로벌 자산을</span>
-              <span className="block bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent py-2">하나의 플랫폼에서</span>
+            <h1 className="text-5xl md:text-7xl font-semibold mb-6 leading-[0.95] tracking-[-0.04em] font-serif text-foreground">
+              <span className="block">글로벌 자산을</span>
+              <span className="block text-motivex-navy py-2">하나의 플랫폼에서</span>
             </h1>
             
             {/* 서브 타이틀 */}
-            <p className="text-lg md:text-xl text-muted-foreground mb-10 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-base md:text-lg text-muted-foreground mb-10 max-w-3xl mx-auto leading-8">
               한국주식, 미국주식, 암호화폐, 옵션까지.<br />
-              <span className="text-foreground font-semibold">전문 트레이더를 위한 차세대 HTS</span>로 더 빠르고, 더 스마트하게 거래하세요.
+              <span className="text-foreground font-medium">전문 트레이더를 위한 차세대 HTS</span>로 더 빠르고, 더 정제된 경험을 제공합니다.
             </p>
             
             {/* CTA 버튼 */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
               <Link href="/auth/signup">
-                <Button size="lg" className="gap-2 text-base h-13 px-8 bg-gradient-primary hover:shadow-xl hover:shadow-primary/40 text-white transition-all duration-300">
+                <Button size="lg" className="gap-2 text-base h-13 px-8 bg-motivex-navy hover:bg-motivex-navy/95 text-white transition-all duration-300 shadow-[0_14px_34px_rgba(11,31,58,0.18)]">
                   무료로 시작하기
                   <ArrowRight className="w-5 h-5" />
                 </Button>
               </Link>
               <Link href="/auth/login">
-                <Button variant="outline" size="lg" className="text-base h-13 px-8 border-primary/30 text-primary hover:bg-primary/5 hover:border-primary/50 transition-all duration-300">
+                <Button variant="outline" size="lg" className="text-base h-13 px-8 border-border/80 bg-white/70 text-motivex-navy hover:bg-motivex-navy/5 hover:border-motivex-navy/20 transition-all duration-300">
                   데모 체험하기
                 </Button>
               </Link>
@@ -109,7 +109,7 @@ export default async function HomePage() {
                 { icon: CheckCircle2, text: 'ISMS 인증' },
                 { icon: Bolt, text: '99.9% 가동률' }
               ].map((item) => (
-                <div key={item.text} className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white border border-border hover:border-primary/30 hover:shadow-md transition-all duration-300">
+                <div key={item.text} className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/80 border border-border/80 shadow-[0_8px_24px_rgba(17,24,39,0.04)] transition-all duration-300">
                   <item.icon className="w-4 h-4 text-gain" />
                   <span className="text-foreground font-medium">{item.text}</span>
                 </div>
@@ -123,7 +123,7 @@ export default async function HomePage() {
       <section id="시장" className="py-24 relative">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">지원 시장</h2>
+            <h2 className="text-4xl md:text-5xl font-semibold text-foreground mb-4 font-serif tracking-[-0.03em]">지원 시장</h2>
             <p className="text-muted-foreground text-lg">주요 금융 시장에 한 번에 접근하세요</p>
           </div>
           
@@ -134,8 +134,8 @@ export default async function HomePage() {
               { emoji: '₿', title: '암호화폐', desc: '100+ 코인' },
               { emoji: '📊', title: '옵션', desc: '전 종목 옵션' }
             ].map((market) => (
-              <div key={market.title} className="group relative overflow-hidden rounded-xl border border-border bg-white p-6 hover:border-primary/50 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div key={market.title} className="group relative overflow-hidden rounded-xl border border-border/80 bg-white/80 p-6 shadow-[0_10px_30px_rgba(17,24,39,0.04)] transition-all duration-300 hover:-translate-y-0.5 hover:border-motivex-navy/20">
+                <div className="absolute inset-0 bg-linear-to-br from-motivex-navy/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <div className="relative z-10 text-center">
                   <div className="text-5xl mb-3 group-hover:scale-110 transition-transform duration-300">{market.emoji}</div>
                   <h3 className="font-semibold text-foreground mb-1">{market.title}</h3>
@@ -151,7 +151,7 @@ export default async function HomePage() {
       <section id="기능" className="py-24 relative">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">전문가를 위한 기능</h2>
+            <h2 className="text-4xl md:text-5xl font-semibold text-foreground mb-4 font-serif tracking-[-0.03em]">전문가를 위한 기능</h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
               기관 수준의 트레이딩 도구를 개인 투자자에게 제공합니다
             </p>
@@ -163,51 +163,51 @@ export default async function HomePage() {
                 icon: Zap, 
                 title: '초저지연 시세', 
                 desc: '밀리초 단위 실시간 시세와 호가 데이터로 빠른 의사결정을 지원합니다.',
-                gradient: 'from-primary/10 to-secondary/5'
+                gradient: 'from-white to-white'
               },
               { 
                 icon: BarChart3, 
                 title: '고급 차트', 
                 desc: '100+ 기술적 지표와 다양한 차트 유형으로 전문적인 분석이 가능합니다.',
-                gradient: 'from-secondary/10 to-primary/5'
+                gradient: 'from-white to-white'
               },
               { 
                 icon: Globe, 
                 title: '글로벌 접근', 
                 desc: '하나의 계좌로 한국, 미국, 암호화폐 시장에 동시 접근하세요.',
-                gradient: 'from-accent/10 to-primary/5'
+                gradient: 'from-white to-white'
               },
               { 
                 icon: Shield, 
                 title: '보안 강화', 
                 desc: '2FA 인증, 암호화 통신, 콜드월렛 보관으로 자산을 안전하게 보호합니다.',
-                gradient: 'from-gain/10 to-primary/5'
+                gradient: 'from-white to-white'
               },
               { 
                 icon: Wallet, 
                 title: '통합 포트폴리오', 
                 desc: '모든 자산을 한눈에 관리하고 실시간 손익을 확인하세요.',
-                gradient: 'from-warning/10 to-primary/5'
+                gradient: 'from-white to-white'
               },
               { 
                 icon: Target, 
                 title: 'AI 분석', 
                 desc: 'AI 기반 뉴스 분석과 시장 인사이트로 더 나은 투자 결정을 내리세요.',
-                gradient: 'from-primary/10 to-secondary/10'
+                gradient: 'from-white to-white'
               }
             ].map((feature, idx) => {
               const IconComponent = feature.icon;
               return (
                 <div 
                   key={idx}
-                  className={`group relative overflow-hidden rounded-xl border border-border bg-gradient-to-br ${feature.gradient} p-8 hover:border-primary/50 hover:shadow-lg transition-all duration-300 hover:-translate-y-1`}
+                  className="group relative overflow-hidden rounded-xl border border-border/80 bg-white/80 p-8 shadow-[0_10px_30px_rgba(17,24,39,0.04)] transition-all duration-300 hover:-translate-y-0.5 hover:border-motivex-navy/20"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="absolute inset-0 bg-linear-to-br from-motivex-navy/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   <div className="relative z-10">
-                    <div className="w-14 h-14 rounded-lg bg-gradient-primary p-3 flex items-center justify-center mb-5 group-hover:shadow-lg group-hover:shadow-primary/30 group-hover:scale-110 transition-all duration-300">
+                    <div className="w-14 h-14 rounded-lg bg-motivex-navy p-3 flex items-center justify-center mb-5 shadow-[0_12px_30px_rgba(11,31,58,0.14)] transition-all duration-300 group-hover:scale-105">
                       <IconComponent className="w-7 h-7 text-white" />
                     </div>
-                    <h3 className="text-xl font-bold text-foreground mb-3">{feature.title}</h3>
+                    <h3 className="text-xl font-semibold text-foreground mb-3">{feature.title}</h3>
                     <p className="text-muted-foreground leading-relaxed">{feature.desc}</p>
                   </div>
                 </div>
@@ -218,10 +218,10 @@ export default async function HomePage() {
       </section>
 
       {/* 수수료 섹션 */}
-      <section id="수수료" className="py-24 relative bg-muted/30">
+      <section id="수수료" className="py-24 relative">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">투명한 수수료</h2>
+            <h2 className="text-4xl md:text-5xl font-semibold text-foreground mb-4 font-serif tracking-[-0.03em]">투명한 수수료</h2>
             <p className="text-muted-foreground text-lg">거래량이 늘어날수록 수수료가 낮아집니다</p>
           </div>
           
@@ -236,12 +236,12 @@ export default async function HomePage() {
                 ].map((row, idx) => (
                   <div 
                     key={idx}
-                    className="group relative overflow-hidden rounded-lg border border-border bg-white p-6 hover:border-primary/50 hover:shadow-md hover:bg-primary/2 transition-all duration-300"
+                    className="group relative overflow-hidden rounded-lg border border-border/80 bg-white/80 p-6 shadow-[0_10px_30px_rgba(17,24,39,0.04)] transition-all duration-300 hover:border-motivex-navy/20 hover:bg-white"
                   >
                     <div className="grid grid-cols-4 gap-4">
                       <div className="font-bold text-foreground">{row.market}</div>
                       <div className="text-center text-muted-foreground group-hover:text-foreground transition-colors">{row.basic}</div>
-                      <div className="text-center text-primary font-semibold group-hover:text-secondary transition-colors">{row.gold}</div>
+                      <div className="text-center text-motivex-navy font-semibold group-hover:text-motivex-navy transition-colors">{row.gold}</div>
                       <div className="text-center text-gain font-bold group-hover:scale-105 transition-transform">{row.vip}</div>
                     </div>
                   </div>
@@ -255,16 +255,16 @@ export default async function HomePage() {
       {/* CTA 섹션 */}
       <section className="py-24 relative">
         <div className="container mx-auto px-4">
-          <div className="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/10 via-secondary/5 to-accent/5 p-12 md:p-16 text-center shadow-lg hover:shadow-xl transition-all duration-300">
-            <div className="absolute inset-0 bg-gradient-mesh opacity-10" />
+          <div className="relative overflow-hidden rounded-2xl border border-border/80 bg-[linear-gradient(180deg,rgba(255,253,248,0.96)_0%,rgba(244,238,228,0.9)_100%)] p-12 md:p-16 text-center shadow-[0_20px_55px_rgba(17,24,39,0.06)] transition-all duration-300">
+            <div className="absolute inset-0 bg-gradient-mesh opacity-[0.06]" />
             <div className="relative z-10">
-              <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">지금 시작하세요</h2>
+              <h2 className="text-4xl md:text-5xl font-semibold text-foreground mb-6 font-serif tracking-[-0.03em]">지금 시작하세요</h2>
               <p className="text-lg text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed">
                 5분 만에 계좌를 개설하고 글로벌 시장에 접근하세요.<br />
-                <span className="text-foreground font-semibold">첫 거래 수수료는 무료입니다.</span>
+                <span className="text-foreground font-medium">첫 거래 수수료는 무료입니다.</span>
               </p>
               <Link href="/auth/signup">
-                <Button size="lg" className="gap-2 text-base h-13 px-10 bg-gradient-primary hover:shadow-xl hover:shadow-primary/40 text-white transition-all duration-300">
+                <Button size="lg" className="gap-2 text-base h-13 px-10 bg-motivex-navy hover:bg-motivex-navy/95 text-white transition-all duration-300 shadow-[0_14px_34px_rgba(11,31,58,0.18)]">
                   무료 계좌 개설
                   <ArrowRight className="w-5 h-5" />
                 </Button>
@@ -275,15 +275,15 @@ export default async function HomePage() {
       </section>
 
       {/* 푸터 */}
-      <footer className="border-t border-border bg-muted/30 backdrop-blur-sm">
+      <footer className="border-t border-border/70 bg-white/65 backdrop-blur-sm">
         <div className="container mx-auto px-4 py-16">
           <div className="grid md:grid-cols-4 gap-12 mb-12">
             <div>
               <div className="flex items-center gap-3 mb-6">
-                <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-primary p-2">
+                <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-motivex-navy p-2 shadow-[0_12px_30px_rgba(11,31,58,0.18)]">
                   <TrendingUp className="w-6 h-6 text-white" />
                 </div>
-                <span className="font-bold text-lg text-foreground">MOTIVEX</span>
+                <span className="font-semibold tracking-[0.28em] text-[13px] text-motivex-navy">MOTIVEX</span>
               </div>
               <p className="text-sm text-muted-foreground leading-relaxed">
                 차세대 글로벌 트레이딩 플랫폼
@@ -296,11 +296,11 @@ export default async function HomePage() {
               { title: '법적 고지', links: ['이용약관', '개인정보처리방침', '투자위험고지'] }
             ].map((section) => (
               <div key={section.title}>
-                <h4 className="font-bold text-foreground mb-6">{section.title}</h4>
+                <h4 className="font-semibold text-foreground mb-6">{section.title}</h4>
                 <ul className="space-y-3">
                   {section.links.map((link) => (
                     <li key={link}>
-                      <Link href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors duration-300 font-medium">
+                      <Link href="#" className="text-sm text-muted-foreground hover:text-motivex-navy transition-colors duration-300 font-medium">
                         {link}
                       </Link>
                     </li>

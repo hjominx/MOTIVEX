@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Cormorant_Garamond, Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
@@ -13,12 +13,18 @@ const geistMono = Geist_Mono({
   variable: '--font-geist-mono'
 });
 
+const cormorant = Cormorant_Garamond({
+  subsets: ['latin'],
+  weight: ['500', '600', '700'],
+  variable: '--font-cormorant',
+});
+
 export const metadata: Metadata = {
-  title: 'NEXUS Trading | 글로벌 HTS 플랫폼',
+  title: 'MOTIVEX | 글로벌 HTS 플랫폼',
   description: '한국주식, 미국주식, 암호화폐, 옵션 거래를 위한 차세대 트레이딩 플랫폼',
-  generator: 'NEXUS Trading',
+  generator: 'MOTIVEX',
   keywords: ['HTS', '주식거래', '암호화폐', '옵션거래', '트레이딩', '실시간 시세'],
-  authors: [{ name: 'NEXUS Trading' }],
+  authors: [{ name: 'MOTIVEX' }],
   icons: {
     icon: [
       {
@@ -39,7 +45,7 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: '#0d0f14',
+  themeColor: '#0b1f3a',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
@@ -52,7 +58,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="ko" className={`${geist.variable} ${geistMono.variable} bg-background`}>
+    <html lang="ko" className={`${geist.variable} ${geistMono.variable} ${cormorant.variable} bg-background`}>
       <body className="font-sans antialiased min-h-screen">
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}

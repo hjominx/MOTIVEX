@@ -3,42 +3,48 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* MOTIVEX 프리미엄 라이트 테마 - 밝고 고급스러운 금융 플랫폼 */
+/* MOTIVEX premium navy theme - minimal, high-end, low-noise */
 :root {
-  /* 배경 - 밝고 깔끔한 화이트 톤 */
-  --background: #fafbfc;
-  --foreground: #0f172a;
-  --card: #ffffff;
-  --card-foreground: #0f172a;
-  --popover: #f8fafc;
-  --popover-foreground: #0f172a;
-  
-  /* 프라이머리 - 세련된 인디고 블루 */
-  --primary: #4f46e5;
-  --primary-light: #6366f1;
-  --primary-dark: #4338ca;
+  --motivex-navy: #0b1f3a;
+  --motivex-navy-deep: #071422;
+  --motivex-ivory: #f6f1e7;
+  --motivex-ink: #111827;
+  --motivex-gold: #b79a67;
+
+  /* 배경 - 아이보리 기반의 고급스러운 화이트 톤 */
+  --background: #fbf7f0;
+  --foreground: #111827;
+  --card: #fffdf8;
+  --card-foreground: #111827;
+  --popover: #fffdf8;
+  --popover-foreground: #111827;
+
+  /* 프라이머리 - MOTIVEX Navy */
+  --primary: #0b1f3a;
+  --primary-light: #15355f;
+  --primary-dark: #071422;
   --primary-foreground: #ffffff;
-  
-  /* 세컨더리 - 소프트 퍼플 */
-  --secondary: #7c3aed;
-  --secondary-foreground: #ffffff;
-  
-  /* 뮤테드 - 밝은 그레이 */
-  --muted: #e2e8f0;
-  --muted-foreground: #64748b;
-  
-  /* 악센트 - 따뜻한 오렌지 */
-  --accent: #f97316;
-  --accent-foreground: #ffffff;
-  
+
+  /* 세컨더리 - 은은한 스톤 톤 */
+  --secondary: #d8d0c4;
+  --secondary-foreground: #111827;
+
+  /* 뮤테드 - 밝은 베이지/그레이 */
+  --muted: #efe8de;
+  --muted-foreground: #6b7280;
+
+  /* 악센트 - 절제된 골드 */
+  --accent: #b79a67;
+  --accent-foreground: #111827;
+
   /* 위험 색상 */
-  --destructive: #ef4444;
+  --destructive: #b42318;
   --destructive-foreground: #ffffff;
-  
+
   /* 보더와 링 */
-  --border: #e2e8f0;
-  --input: #f1f5f9;
-  --ring: #4f46e5;
+  --border: #ded6c9;
+  --input: #f4eee4;
+  --ring: #0b1f3a;
   
   /* 트레이딩 색상 - 생생한 톤 */
   --gain: #16a34a;
@@ -49,37 +55,38 @@
   --warning-foreground: #ffffff;
   
   /* 차트 색상 */
-  --chart-1: #4f46e5;
+  --chart-1: #0b1f3a;
   --chart-2: #16a34a;
   --chart-3: #dc2626;
-  --chart-4: #ea580c;
-  --chart-5: #7c3aed;
+  --chart-4: #b79a67;
+  --chart-5: #6b7280;
   --chart-candle-up: #16a34a;
   --chart-candle-down: #dc2626;
   
   /* 사이드바 */
-  --sidebar: #ffffff;
-  --sidebar-foreground: #1e293b;
-  --sidebar-primary: #4f46e5;
+  --sidebar: #fffdf8;
+  --sidebar-foreground: #111827;
+  --sidebar-primary: #0b1f3a;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #f1f5f9;
-  --sidebar-accent-foreground: #4f46e5;
-  --sidebar-border: #e2e8f0;
-  --sidebar-ring: #4f46e5;
+  --sidebar-accent: #efe8de;
+  --sidebar-accent-foreground: #0b1f3a;
+  --sidebar-border: #ded6c9;
+  --sidebar-ring: #0b1f3a;
   
   /* 라디우스 */
   --radius: 0.75rem;
   
   /* 그래디언트 변수들 */
-  --gradient-primary: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
-  --gradient-accent: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  --gradient-primary: linear-gradient(135deg, #0b1f3a 0%, #15355f 100%);
+  --gradient-accent: linear-gradient(135deg, #b79a67 0%, #8b6f3f 100%);
   --gradient-success: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
-  --gradient-warning: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
-  --gradient-glow: radial-gradient(circle at center, rgba(79, 70, 229, 0.15) 0%, transparent 100%);
+  --gradient-warning: linear-gradient(135deg, #b79a67 0%, #8b6f3f 100%);
+  --gradient-glow: radial-gradient(circle at center, rgba(11, 31, 58, 0.12) 0%, transparent 100%);
 }
 
 @theme inline {
   --font-sans: 'Geist', 'Geist Fallback', system-ui, sans-serif;
+  --font-serif: 'Cormorant Garamond', 'Iowan Old Style', 'Palatino Linotype', serif;
   --font-mono: 'Geist Mono', 'Geist Mono Fallback', monospace;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -132,7 +139,12 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+    background-image:
+      radial-gradient(circle at top left, rgba(11, 31, 58, 0.06), transparent 32%),
+      radial-gradient(circle at top right, rgba(183, 154, 103, 0.06), transparent 28%),
+      linear-gradient(180deg, #fffdf8 0%, #fbf7f0 100%);
+    background-attachment: fixed;
   }
   
   /* 숫자 표시 최적화 */
@@ -204,15 +216,39 @@
   }
   
   .gradient-mesh {
-    background: linear-gradient(135deg, #00d4ff 0%, #6366f1 50%, #ff006e 100%);
+    background: linear-gradient(135deg, rgba(11, 31, 58, 0.95) 0%, rgba(21, 53, 95, 0.85) 50%, rgba(183, 154, 103, 0.75) 100%);
   }
   
   .glow-primary {
-    box-shadow: 0 0 20px rgba(0, 212, 255, 0.3), 0 0 40px rgba(0, 212, 255, 0.1);
+    box-shadow: 0 16px 40px rgba(11, 31, 58, 0.16);
   }
   
   .glow-accent {
-    box-shadow: 0 0 20px rgba(255, 0, 110, 0.3), 0 0 40px rgba(255, 0, 110, 0.1);
+    box-shadow: 0 16px 32px rgba(183, 154, 103, 0.16);
+  }
+
+  .panel-surface {
+    background: rgba(255, 253, 248, 0.82);
+    backdrop-filter: blur(18px);
+    border: 1px solid rgba(11, 31, 58, 0.08);
+    box-shadow: 0 18px 50px rgba(17, 24, 39, 0.06);
+  }
+
+  .text-motivex-navy {
+    color: var(--motivex-navy);
+  }
+
+  .bg-motivex-navy {
+    background-color: var(--motivex-navy);
+  }
+
+  .border-motivex-navy {
+    border-color: var(--motivex-navy);
+  }
+
+  .surface-hairline {
+    border: 1px solid rgba(11, 31, 58, 0.08);
+    background: rgba(255, 253, 248, 0.9);
   }
   
   /* 호가창 애니메이션 */
@@ -291,16 +327,17 @@
   
   /* 백드롭 블러 + 그래디언트 배경 */
   .backdrop-glow {
-    background: rgba(10, 14, 39, 0.8);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(0, 212, 255, 0.1);
+    background: rgba(255, 253, 248, 0.82);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(11, 31, 58, 0.08);
   }
   
   /* 프리미엄 카드 스타일 */
   .card-premium {
-    background: linear-gradient(135deg, rgba(19, 26, 63, 0.5) 0%, rgba(26, 36, 71, 0.3) 100%);
-    border: 1px solid rgba(0, 212, 255, 0.1);
-    backdrop-filter: blur(10px);
+    background: linear-gradient(135deg, rgba(255, 253, 248, 0.96) 0%, rgba(244, 238, 228, 0.9) 100%);
+    border: 1px solid rgba(11, 31, 58, 0.08);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 14px 38px rgba(17, 24, 39, 0.05);
   }
   
   /* 호버 그래디언트 효과 */
@@ -313,7 +350,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, transparent 100%);
+    background: linear-gradient(135deg, rgba(11, 31, 58, 0.08) 0%, transparent 100%);
     opacity: 0;
     transition: opacity 0.3s ease;
     border-radius: inherit;

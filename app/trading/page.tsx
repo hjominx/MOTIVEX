@@ -24,17 +24,17 @@ export default function TradingPage() {
   }, [selectedSymbol, setSelectedSymbol]);
 
   return (
-    <div className="h-screen flex flex-col bg-background">
+    <div className="h-screen flex flex-col bg-background text-foreground">
       {/* 헤더 */}
       <TradingHeader />
       
       {/* 메인 컨텐츠 */}
-      <div className="flex-1 flex min-h-0">
+      <div className="flex-1 flex min-h-0 gap-3 p-3">
         {/* 좌측: 관심종목 사이드바 */}
         <WatchlistSidebar />
         
         {/* 중앙: 차트 + 포트폴리오 */}
-        <div className="flex-1 flex flex-col p-4 gap-4 min-w-0">
+        <div className="flex-1 flex flex-col gap-3 min-w-0">
           {/* 차트 */}
           <PriceChart />
           
@@ -43,7 +43,7 @@ export default function TradingPage() {
         </div>
         
         {/* 우측: 호가창 + 주문 */}
-        <div className="flex gap-2 p-4 shrink-0">
+        <div className="w-83 flex flex-col gap-3 shrink-0">
           <OrderBook />
           <OrderPanel />
         </div>

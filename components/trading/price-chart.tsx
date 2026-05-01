@@ -59,7 +59,7 @@ export function PriceChart() {
 
     const width = rect.width;
     const height = rect.height;
-    const padding = { top: 20, right: 60, bottom: 30, left: 10 };
+    const padding = { top: 20, right: 76, bottom: 28, left: 10 };
     const chartWidth = width - padding.left - padding.right;
     const chartHeight = height - padding.top - padding.bottom;
 
@@ -79,7 +79,7 @@ export function PriceChart() {
     const candleGap = chartWidth / candleData.length;
 
     // 그리드 라인 그리기
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+    ctx.strokeStyle = 'rgba(11, 31, 58, 0.08)';
     ctx.lineWidth = 1;
     
     const gridLines = 5;
@@ -92,7 +92,7 @@ export function PriceChart() {
 
       // 가격 레이블
       const price = maxPrice - (priceRange * i / gridLines);
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+      ctx.fillStyle = 'rgba(17, 24, 39, 0.45)';
       ctx.font = '10px monospace';
       ctx.textAlign = 'left';
       ctx.fillText(
@@ -147,9 +147,9 @@ export function PriceChart() {
     }
   }, [candleData, selectedMarket, ticker, formatPrice]);
 
-  if (!selectedSymbol) {
+    if (!selectedSymbol) {
     return (
-      <Card className="flex-1 flex items-center justify-center bg-card/50 border-border/50">
+      <Card className="flex-1 flex items-center justify-center panel-surface border-border/50 rounded-2xl overflow-hidden">
         <div className="text-center text-muted-foreground">
           <BarChart2 className="w-12 h-12 mx-auto mb-3 opacity-50" />
           <p>종목을 선택해주세요</p>
@@ -162,20 +162,20 @@ export function PriceChart() {
   const currency = getCurrencySymbol(selectedMarket || 'krx');
 
   return (
-    <Card className="flex-1 flex flex-col bg-card/50 border-border/50 overflow-hidden">
+    <Card className="flex-1 flex flex-col panel-surface border-border/50 overflow-hidden rounded-2xl">
       {/* 헤더 */}
-      <div className="p-4 border-b border-border/50">
+      <div className="p-3.5 border-b border-border/50 bg-white/55">
         <div className="flex items-start justify-between">
           <div>
             <div className="flex items-center gap-3">
-              <h2 className="text-xl font-bold">{ticker?.name || selectedSymbol}</h2>
-              <span className="text-sm text-muted-foreground">{selectedSymbol}</span>
+              <h2 className="text-[22px] font-semibold tracking-[-0.04em] font-serif">{ticker?.name || selectedSymbol}</h2>
+              <span className="text-[11px] text-muted-foreground uppercase tracking-[0.14em]">{selectedSymbol}</span>
             </div>
-            <div className="flex items-baseline gap-3 mt-1">
-              <span className="text-3xl font-bold font-mono">
+            <div className="flex items-baseline gap-3 mt-1.5">
+              <span className="text-3xl font-semibold font-mono tracking-[-0.03em]">
                 {currency}{formatPrice(ticker?.price || 0, selectedMarket || 'krx')}
               </span>
-              <span className={`flex items-center gap-1 text-lg font-medium ${
+              <span className={`flex items-center gap-1 text-base font-medium ${
                 isPositive ? 'text-gain' : 'text-loss'
               }`}>
                 {isPositive ? (
@@ -189,22 +189,22 @@ export function PriceChart() {
           </div>
           
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon">
+            <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg hover:bg-motivex-navy/5">
               <Settings className="w-4 h-4" />
             </Button>
-            <Button variant="ghost" size="icon">
+            <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg hover:bg-motivex-navy/5">
               <Maximize2 className="w-4 h-4" />
             </Button>
           </div>
         </div>
 
         {/* 시간 간격 선택 */}
-        <div className="flex items-center gap-1 mt-4">
+        <div className="flex items-center gap-1 mt-3.5">
           <div className="flex items-center gap-1 mr-2 border-r border-border pr-2">
             <Button
               variant={chartType === 'candle' ? 'secondary' : 'ghost'}
               size="icon"
-              className="h-7 w-7"
+              className="h-7 w-7 rounded-lg"
               onClick={() => setChartType('candle')}
             >
               <CandlestickChart className="w-4 h-4" />
@@ -212,7 +212,7 @@ export function PriceChart() {
             <Button
               variant={chartType === 'line' ? 'secondary' : 'ghost'}
               size="icon"
-              className="h-7 w-7"
+              className="h-7 w-7 rounded-lg"
               onClick={() => setChartType('line')}
             >
               <LineChart className="w-4 h-4" />
@@ -224,7 +224,7 @@ export function PriceChart() {
               key={value}
               variant={interval === value ? 'secondary' : 'ghost'}
               size="sm"
-              className="h-7 px-2 text-xs"
+              className="h-7 px-2 text-[11px] rounded-lg"
               onClick={() => setInterval(value)}
             >
               {label}
@@ -234,7 +234,7 @@ export function PriceChart() {
       </div>
 
       {/* 차트 캔버스 */}
-      <div className="flex-1 p-4 min-h-0">
+      <div className="flex-1 p-3.5 min-h-0 bg-[linear-gradient(180deg,rgba(255,253,248,0.45)_0%,rgba(255,255,255,0.05)_100%)]">
         <canvas
           ref={canvasRef}
           className="w-full h-full"
@@ -242,29 +242,29 @@ export function PriceChart() {
       </div>
 
       {/* 거래 정보 */}
-      <div className="px-4 py-3 border-t border-border/50 bg-muted/20">
-        <div className="grid grid-cols-4 gap-4 text-sm">
+      <div className="px-4 py-3 border-t border-border/50 bg-white/55">
+        <div className="grid grid-cols-4 gap-4 text-[11px]">
           <div>
             <span className="text-muted-foreground">시가</span>
-            <div className="font-mono mt-0.5">
+            <div className="font-mono mt-0.5 tracking-[-0.02em]">
               {currency}{formatPrice(ticker?.open || 0, selectedMarket || 'krx')}
             </div>
           </div>
           <div>
             <span className="text-muted-foreground">고가</span>
-            <div className="font-mono mt-0.5 text-gain">
+            <div className="font-mono mt-0.5 text-gain tracking-[-0.02em]">
               {currency}{formatPrice(ticker?.high || 0, selectedMarket || 'krx')}
             </div>
           </div>
           <div>
             <span className="text-muted-foreground">저가</span>
-            <div className="font-mono mt-0.5 text-loss">
+            <div className="font-mono mt-0.5 text-loss tracking-[-0.02em]">
               {currency}{formatPrice(ticker?.low || 0, selectedMarket || 'krx')}
             </div>
           </div>
           <div>
             <span className="text-muted-foreground">거래량</span>
-            <div className="font-mono mt-0.5">
+            <div className="font-mono mt-0.5 tracking-[-0.02em]">
               {((ticker?.volume || 0) / 1000000).toFixed(2)}M
             </div>
           </div>
