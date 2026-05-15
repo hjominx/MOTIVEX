@@ -199,7 +199,7 @@ export function generateCandleData(
       low: Number(low.toFixed(2)),
       close: Number(close.toFixed(2)),
       volume: Math.floor(Math.random() * 1000000),
-    });
+    });``
   }
   
   return candles;

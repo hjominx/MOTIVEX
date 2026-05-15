@@ -1,0 +1,12 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 다크 모드 아이콘 -->
+  <rect width="32" height="32" rx="6" fill="#0B1F3A"/>
+  <path d="M8 20 L10 18 L12 22 L14 16 L16 19 L18 15 L20 18 L22 14 L24 17"
+        stroke="#B79A67" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M13 12 L14 11 L15 12 L14.5 12 L14.5 14 L13.5 14 L13.5 12 Z"
+        fill="#10B981"/>
+  <rect x="9" y="17" width="1" height="3" fill="#B79A67" opacity="0.6"/>
+  <rect x="11" y="19" width="1" height="2" fill="#B79A67" opacity="0.6"/>
+  <rect x="15" y="15" width="1" height="4" fill="#B79A67" opacity="0.6"/>
+  <rect x="17" y="13" width="1" height="5" fill="#B79A67" opacity="0.6"/>
+</svg>

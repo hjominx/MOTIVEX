@@ -1,0 +1,15 @@
+<svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="180" height="180" rx="40" fill="#0B1F3A"/>
+  <path d="M35 120 L50 110 L65 125 L80 95 L95 105 L110 85 L125 100 L140 75 L155 90"
+        stroke="#B79A67" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M70 70 L80 60 L90 70 L85 70 L85 85 L75 85 L75 70 Z"
+        fill="#10B981"/>
+  <rect x="45" y="105" width="3" height="15" fill="#B79A67" opacity="0.6"/>
+  <rect x="60" y="115" width="3" height="10" fill="#B79A67" opacity="0.6"/>
+  <rect x="75" y="85" width="3" height="20" fill="#B79A67" opacity="0.6"/>
+  <rect x="90" y="95" width="3" height="15" fill="#B79A67" opacity="0.6"/>
+  <rect x="105" y="75" width="3" height="25" fill="#B79A67" opacity="0.6"/>
+  <rect x="120" y="90" width="3" height="18" fill="#B79A67" opacity="0.6"/>
+  <rect x="135" y="65" width="3" height="30" fill="#B79A67" opacity="0.6"/>
+  <text x="90" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#B79A67">MOTIVEX</text>
+</svg>

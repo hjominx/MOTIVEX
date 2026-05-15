@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" fill="none">
+  <style>
+    @media (prefers-color-scheme: light) {
+      .background { fill: #F8FAFC; }
+      .grid { stroke: #E2E8F0; }
+      .chart-line { stroke: #0B1F3A; }
+      .accent { fill: #B79A67; }
+      .text { fill: #64748B; }
+    }
+    @media (prefers-color-scheme: dark) {
+      .background { fill: #0F172A; }
+      .grid { stroke: #334155; }
+      .chart-line { stroke: #E2E8F0; }
+      .accent { fill: #B79A67; }
+      .text { fill: #94A3B8; }
+    }
+  </style>
+
+  <!-- 배경 -->
+  <rect width="400" height="300" rx="8" class="background" stroke="#B79A67" stroke-width="1" opacity="0.5"/>
+
+  <!-- 그리드 -->
+  <g opacity="0.3">
+    <path d="M50 50 L350 50" class="grid" stroke-width="1"/>
+    <path d="M50 100 L350 100" class="grid" stroke-width="1"/>
+    <path d="M50 150 L350 150" class="grid" stroke-width="1"/>
+    <path d="M50 200 L350 200" class="grid" stroke-width="1"/>
+    <path d="M50 250 L350 250" class="grid" stroke-width="1"/>
+    <path d="M100 30 L100 270" class="grid" stroke-width="1"/>
+    <path d="M150 30 L150 270" class="grid" stroke-width="1"/>
+    <path d="M200 30 L200 270" class="grid" stroke-width="1"/>
+    <path d="M250 30 L250 270" class="grid" stroke-width="1"/>
+    <path d="M300 30 L300 270" class="grid" stroke-width="1"/>
+  </g>
+
+  <!-- 차트 라인 -->
+  <path d="M60 220 L90 190 L120 240 L150 170 L180 200 L210 150 L240 180 L270 130 L300 160 L330 120"
+        class="chart-line" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- 캔들스틱 -->
+  <g opacity="0.7">
+    <rect x="85" y="180" width="4" height="30" class="accent"/>
+    <rect x="115" y="160" width="4" height="40" class="accent"/>
+    <rect x="145" y="140" width="4" height="50" class="accent"/>
+    <rect x="175" y="120" width="4" height="60" class="accent"/>
+    <rect x="205" y="100" width="4" height="70" class="accent"/>
+    <rect x="235" y="80" width="4" height="80" class="accent"/>
+    <rect x="265" y="60" width="4" height="90" class="accent"/>
+    <rect x="295" y="40" width="4" height="100" class="accent"/>
+  </g>
+
+  <!-- 상승 화살표 -->
+  <path d="M320 100 L330 90 L340 100 L335 100 L335 115 L325 115 L325 100 Z" class="accent" opacity="0.8"/>
+
+  <!-- 텍스트 -->
+  <text x="200" y="285" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" class="text">차트 데이터</text>
+</svg>

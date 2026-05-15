@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" fill="none">
+  <style>
+    @media (prefers-color-scheme: light) {
+      .background { fill: #F1F5F9; }
+      .icon { fill: #64748B; }
+      .text { fill: #475569; }
+    }
+    @media (prefers-color-scheme: dark) {
+      .background { fill: #1E293B; }
+      .icon { fill: #94A3B8; }
+      .text { fill: #CBD5E1; }
+    }
+  </style>
+
+  <!-- 배경 원 -->
+  <circle cx="60" cy="60" r="58" class="background" stroke="#B79A67" stroke-width="2"/>
+
+  <!-- 사용자 아이콘 -->
+  <circle cx="60" cy="45" r="18" class="icon" opacity="0.8"/>
+  <path d="M35 95 Q35 80 45 80 L75 80 Q85 80 85 95 L85 105 L35 105 Z" class="icon" opacity="0.8"/>
+
+  <!-- 차트 아이콘 오버레이 -->
+  <g transform="translate(45, 35)" opacity="0.6">
+    <path d="M5 15 L8 12 L11 17 L14 9 L17 14"
+          stroke="#B79A67" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <path d="M12 6 L13 5 L14 6 L13.5 6 L13.5 8 L12.5 8 L12.5 6 Z"
+          fill="#10B981"/>
+  </g>
+
+  <!-- 텍스트 -->
+  <text x="60" y="115" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" class="text">사용자</text>
+</svg>

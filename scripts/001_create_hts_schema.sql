@@ -90,14 +90,97 @@ CREATE TABLE IF NOT EXISTS public.trades (
   executed_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 7. 포트폴리오 (보유종목)
-CREATE TABLE IF NOT EXISTS public.positions (
+-- 8. 감사 로그 테이블
+CREATE TABLE IF NOT EXISTS public.audit_logs (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
-  account_id UUID REFERENCES public.connected_accounts(id),
-  symbol TEXT NOT NULL,
-  market TEXT NOT NULL CHECK (market IN ('krx', 'nyse', 'nasdaq', 'crypto', 'options')),
-  name TEXT,
+  user_id TEXT NOT NULL, -- 'unknown'일 수 있음
+  action TEXT NOT NULL CHECK (action IN (
+    'USER_LOGIN', 'USER_LOGOUT', 'USER_REGISTER', 'USER_UPDATE', 'USER_DELETE',
+    'USER_ROLE_CHANGE', 'USER_LOGIN_FAILED', 'API_ACCESS', 'ADMIN_ACCESS',
+    'ORDER_CREATE', 'ORDER_CANCEL', 'ORDER_UPDATE', 'ACCOUNT_CONNECT', 'ACCOUNT_DISCONNECT'
+  )),
+  resource_type TEXT NOT NULL,
+  resource_id TEXT,
+  details JSONB DEFAULT '{}',
+  ip_address INET NOT NULL,
+  user_agent TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 감사 로그 인덱스 (성능 최적화)
+CREATE INDEX IF NOT EXISTS idx_audit_logs_user_id ON public.audit_logs(user_id);
+CREATE INDEX IF NOT EXISTS idx_audit_logs_action ON public.audit_logs(action);
+CREATE INDEX IF NOT EXISTS idx_audit_logs_created_at ON public.audit_logs(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_audit_logs_ip_address ON public.audit_logs(ip_address);
+
+-- 사용자 프로필에 역할 필드 추가
+ALTER TABLE public.profiles
+ADD COLUMN IF NOT EXISTS role TEXT DEFAULT 'user' CHECK (role IN ('user', 'moderator', 'admin', 'super_admin')),
+ADD COLUMN IF NOT EXISTS last_login_at TIMESTAMPTZ;
+
+-- RLS 정책 업데이트
+ALTER TABLE public.audit_logs ENABLE ROW LEVEL SECURITY;
+
+-- 감사 로그는 관리자만 조회 가능
+CREATE POLICY "Audit logs are viewable by admins" ON public.audit_logs
+  FOR SELECT USING (
+    EXISTS (
+      SELECT 1 FROM public.profiles
+      WHERE id = auth.uid()
+      AND role IN ('admin', 'super_admin')
+    )
+  );
+
+-- 감사 로그는 시스템만 삽입 가능 (서버 사이드에서만)
+CREATE POLICY "Audit logs are insertable by service role" ON public.audit_logs
+  FOR INSERT WITH CHECK (auth.role() = 'service_role');
+
+-- 기존 프로필 RLS 정책 업데이트 (역할 필드 포함)
+DROP POLICY IF EXISTS "Users can view own profile" ON public.profiles;
+CREATE POLICY "Users can view own profile" ON public.profiles
+  FOR SELECT USING (auth.uid() = id);
+
+DROP POLICY IF EXISTS "Users can update own profile" ON public.profiles;
+CREATE POLICY "Users can update own profile" ON public.profiles
+  FOR UPDATE USING (auth.uid() = id)
+  WITH CHECK (
+    auth.uid() = id
+    -- 민감한 필드(역할, 티어)는 관리자만 수정 가능
+    AND (
+      OLD.role = NEW.role
+      AND OLD.tier = NEW.tier
+    )
+  );
+
+-- 관리자용 프로필 관리 정책
+CREATE POLICY "Admins can manage all profiles" ON public.profiles
+  FOR ALL USING (
+    EXISTS (
+      SELECT 1 FROM public.profiles
+      WHERE id = auth.uid()
+      AND role IN ('admin', 'super_admin')
+    )
+  );
+
+-- 관리자용 주문 관리 정책
+CREATE POLICY "Admins can view all orders" ON public.orders
+  FOR SELECT USING (
+    EXISTS (
+      SELECT 1 FROM public.profiles
+      WHERE id = auth.uid()
+      AND role IN ('admin', 'super_admin')
+    )
+  );
+
+-- 관리자용 거래 내역 조회 정책
+CREATE POLICY "Admins can view all trades" ON public.trades
+  FOR SELECT USING (
+    EXISTS (
+      SELECT 1 FROM public.profiles
+      WHERE id = auth.uid()
+      AND role IN ('admin', 'super_admin')
+    )
+  );
   quantity DECIMAL(20, 8) NOT NULL DEFAULT 0,
   avg_cost DECIMAL(20, 8) NOT NULL DEFAULT 0,
   current_price DECIMAL(20, 8),

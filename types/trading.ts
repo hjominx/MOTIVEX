@@ -6,6 +6,9 @@ export type OrderType = 'market' | 'limit' | 'stop' | 'stop_limit';
 export type OrderSide = 'buy' | 'sell';
 export type OrderStatus = 'pending' | 'submitted' | 'partial' | 'filled' | 'cancelled' | 'rejected';
 
+// 사용자 역할 (RBAC)
+export type UserRole = 'user' | 'moderator' | 'admin' | 'super_admin';
+
 // 사용자 등급
 export type UserTier = 'basic' | 'silver' | 'gold' | 'platinum' | 'vip';
 
@@ -15,6 +18,14 @@ export type AccountProvider = 'kis' | 'kiwoom' | 'upbit' | 'binance' | 'alpaca';
 // 알림 타입
 export type AlertType = 'price_above' | 'price_below' | 'percent_change' | 'volume_spike';
 
+// 감사 로그 타입
+export type AuditAction =
+  | 'USER_LOGIN' | 'USER_LOGOUT' | 'USER_REGISTER'
+  | 'USER_DELETE' | 'USER_UPDATE' | 'USER_ROLE_CHANGE'
+  | 'ORDER_CREATE' | 'ORDER_CANCEL' | 'ORDER_UPDATE'
+  | 'ACCOUNT_CONNECT' | 'ACCOUNT_DISCONNECT'
+  | 'ADMIN_ACCESS' | 'ADMIN_ACTION';
+
 // 사용자 프로필
 export interface UserProfile {
   id: string;
@@ -22,10 +33,25 @@ export interface UserProfile {
   full_name: string | null;
   phone: string | null;
   tier: UserTier;
+  role: UserRole;
   is_verified: boolean;
   two_factor_enabled: boolean;
   created_at: string;
   updated_at: string;
+  last_login_at: string | null;
+}
+
+// 감사 로그
+export interface AuditLog {
+  id: string;
+  user_id: string;
+  action: AuditAction;
+  resource_type: string;
+  resource_id: string | null;
+  details: Record<string, any>;
+  ip_address: string;
+  user_agent: string | null;
+  created_at: string;
 }
 
 // 연결된 계좌

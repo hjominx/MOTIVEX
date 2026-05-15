@@ -19,7 +19,7 @@ import { createCipheriv, createDecipheriv, randomBytes, createHash } from 'crypt
 
 const ALGORITHM = 'aes-256-gcm';
 const IV_LENGTH = 12;      // 96-bit IV recommended for GCM
-const TAG_LENGTH = 16;     // 128-bit auth tag
+const TAG_LENGTH = 10;     // 128-bit auth tag
 
 /**
  * Derive a fixed 32-byte key from the ENCRYPTION_KEY env var.

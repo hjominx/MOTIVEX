@@ -1,1 +1,62 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" fill="none"><rect width="1200" height="1200" fill="#EAEAEA" rx="3"/><g opacity=".5"><g opacity=".5"><path fill="#FAFAFA" d="M600.709 736.5c-75.454 0-136.621-61.167-136.621-136.62 0-75.454 61.167-136.621 136.621-136.621 75.453 0 136.62 61.167 136.62 136.621 0 75.453-61.167 136.62-136.62 136.62Z"/><path stroke="#C9C9C9" stroke-width="2.418" d="M600.709 736.5c-75.454 0-136.621-61.167-136.621-136.62 0-75.454 61.167-136.621 136.621-136.621 75.453 0 136.62 61.167 136.62 136.621 0 75.453-61.167 136.62-136.62 136.62Z"/></g><path stroke="url(#a)" stroke-width="2.418" d="M0-1.209h553.581" transform="scale(1 -1) rotate(45 1163.11 91.165)"/><path stroke="url(#b)" stroke-width="2.418" d="M404.846 598.671h391.726"/><path stroke="url(#c)" stroke-width="2.418" d="M599.5 795.742V404.017"/><path stroke="url(#d)" stroke-width="2.418" d="m795.717 796.597-391.441-391.44"/><path fill="#fff" d="M600.709 656.704c-31.384 0-56.825-25.441-56.825-56.824 0-31.384 25.441-56.825 56.825-56.825 31.383 0 56.824 25.441 56.824 56.825 0 31.383-25.441 56.824-56.824 56.824Z"/><g clip-path="url(#e)"><path fill="#666" fill-rule="evenodd" d="M616.426 586.58h-31.434v16.176l3.553-3.554.531-.531h9.068l.074-.074 8.463-8.463h2.565l7.18 7.181V586.58Zm-15.715 14.654 3.698 3.699 1.283 1.282-2.565 2.565-1.282-1.283-5.2-5.199h-6.066l-5.514 5.514-.073.073v2.876a2.418 2.418 0 0 0 2.418 2.418h26.598a2.418 2.418 0 0 0 2.418-2.418v-8.317l-8.463-8.463-7.181 7.181-.071.072Zm-19.347 5.442v4.085a6.045 6.045 0 0 0 6.046 6.045h26.598a6.044 6.044 0 0 0 6.045-6.045v-7.108l1.356-1.355-1.282-1.283-.074-.073v-17.989h-38.689v23.43l-.146.146.146.147Z" clip-rule="evenodd"/></g><path stroke="#C9C9C9" stroke-width="2.418" d="M600.709 656.704c-31.384 0-56.825-25.441-56.825-56.824 0-31.384 25.441-56.825 56.825-56.825 31.383 0 56.824 25.441 56.824 56.825 0 31.383-25.441 56.824-56.824 56.824Z"/></g><defs><linearGradient id="a" x1="554.061" x2="-.48" y1=".083" y2=".087" gradientUnits="userSpaceOnUse"><stop stop-color="#C9C9C9" stop-opacity="0"/><stop offset=".208" stop-color="#C9C9C9"/><stop offset=".792" stop-color="#C9C9C9"/><stop offset="1" stop-color="#C9C9C9" stop-opacity="0"/></linearGradient><linearGradient id="b" x1="796.912" x2="404.507" y1="599.963" y2="599.965" gradientUnits="userSpaceOnUse"><stop stop-color="#C9C9C9" stop-opacity="0"/><stop offset=".208" stop-color="#C9C9C9"/><stop offset=".792" stop-color="#C9C9C9"/><stop offset="1" stop-color="#C9C9C9" stop-opacity="0"/></linearGradient><linearGradient id="c" x1="600.792" x2="600.794" y1="403.677" y2="796.082" gradientUnits="userSpaceOnUse"><stop stop-color="#C9C9C9" stop-opacity="0"/><stop offset=".208" stop-color="#C9C9C9"/><stop offset=".792" stop-color="#C9C9C9"/><stop offset="1" stop-color="#C9C9C9" stop-opacity="0"/></linearGradient><linearGradient id="d" x1="404.85" x2="796.972" y1="403.903" y2="796.02" gradientUnits="userSpaceOnUse"><stop stop-color="#C9C9C9" stop-opacity="0"/><stop offset=".208" stop-color="#C9C9C9"/><stop offset=".792" stop-color="#C9C9C9"/><stop offset="1" stop-color="#C9C9C9" stop-opacity="0"/></linearGradient><clipPath id="e"><path fill="#fff" d="M581.364 580.535h38.689v38.689h-38.689z"/></clipPath></defs></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" fill="none">
+  <style>
+    @media (prefers-color-scheme: light) {
+      .background { fill: #F8FAFC; }
+      .chart-line { stroke: #0B1F3A; }
+      .accent { fill: #B79A67; }
+      .text { fill: #64748B; }
+    }
+    @media (prefers-color-scheme: dark) {
+      .background { fill: #0F172A; }
+      .chart-line { stroke: #E2E8F0; }
+      .accent { fill: #B79A67; }
+      .text { fill: #94A3B8; }
+    }
+  </style>
+
+  <!-- 배경 -->
+  <rect width="1200" height="1200" class="background" rx="12"/>
+
+  <!-- 차트 컨테이너 -->
+  <rect x="100" y="200" width="1000" height="600" rx="8" fill="rgba(11, 31, 58, 0.05)" stroke="rgba(183, 154, 103, 0.2)" stroke-width="2"/>
+
+  <!-- 그리드 라인 -->
+  <g opacity="0.3">
+    <path d="M100 300 L1100 300" stroke="#B79A67" stroke-width="1"/>
+    <path d="M100 400 L1100 400" stroke="#B79A67" stroke-width="1"/>
+    <path d="M100 500 L1100 500" stroke="#B79A67" stroke-width="1"/>
+    <path d="M100 600 L1100 600" stroke="#B79A67" stroke-width="1"/>
+    <path d="M100 700 L1100 700" stroke="#B79A67" stroke-width="1"/>
+    <path d="M300 200 L300 800" stroke="#B79A67" stroke-width="1"/>
+    <path d="M500 200 L500 800" stroke="#B79A67" stroke-width="1"/>
+    <path d="M700 200 L700 800" stroke="#B79A67" stroke-width="1"/>
+    <path d="M900 200 L900 800" stroke="#B79A67" stroke-width="1"/>
+  </g>
+
+  <!-- 메인 차트 라인 -->
+  <path d="M150 650 L250 600 L350 680 L450 550 L550 620 L650 520 L750 580 L850 480 L950 540 L1050 460"
+        class="chart-line" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- 캔들스틱들 -->
+  <g opacity="0.7">
+    <rect x="240" y="590" width="8" height="40" class="accent"/>
+    <rect x="340" y="540" width="8" height="60" class="accent"/>
+    <rect x="440" y="520" width="8" height="80" class="accent"/>
+    <rect x="540" y="480" width="8" height="100" class="accent"/>
+    <rect x="640" y="460" width="8" height="120" class="accent"/>
+    <rect x="740" y="420" width="8" height="140" class="accent"/>
+    <rect x="840" y="400" width="8" height="160" class="accent"/>
+    <rect x="940" y="380" width="8" height="180" class="accent"/>
+  </g>
+
+  <!-- 상승 화살표들 -->
+  <g opacity="0.8">
+    <path d="M280 570 L290 560 L300 570 L295 570 L295 585 L285 585 L285 570 Z" class="accent"/>
+    <path d="M480 500 L490 490 L500 500 L495 500 L495 515 L485 515 L485 500 Z" class="accent"/>
+    <path d="M680 440 L690 430 L700 440 L695 440 L695 455 L685 455 L685 440 Z" class="accent"/>
+  </g>
+
+  <!-- 텍스트 -->
+  <text x="600" y="900" text-anchor="middle" font-family="Arial, sans-serif" font-size="48" font-weight="bold" class="text">차트 데이터</text>
+  <text x="600" y="960" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" class="text">실시간 시세 정보가 여기에 표시됩니다</text>
+</svg>
