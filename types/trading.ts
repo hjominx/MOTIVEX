@@ -20,11 +20,11 @@ export type AlertType = 'price_above' | 'price_below' | 'percent_change' | 'volu
 
 // 감사 로그 타입
 export type AuditAction =
-  | 'USER_LOGIN' | 'USER_LOGOUT' | 'USER_REGISTER'
+  | 'USER_LOGIN' | 'USER_LOGOUT' | 'USER_REGISTER' | 'USER_LOGIN_FAILED'
   | 'USER_DELETE' | 'USER_UPDATE' | 'USER_ROLE_CHANGE'
   | 'ORDER_CREATE' | 'ORDER_CANCEL' | 'ORDER_UPDATE'
   | 'ACCOUNT_CONNECT' | 'ACCOUNT_DISCONNECT'
-  | 'ADMIN_ACCESS' | 'ADMIN_ACTION';
+  | 'ADMIN_ACCESS' | 'ADMIN_ACTION' | 'API_ACCESS';
 
 // 사용자 프로필
 export interface UserProfile {

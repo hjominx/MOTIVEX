@@ -5,12 +5,12 @@ import { requireAuth, requireRole } from '@/lib/security/auth-middleware'
 import type { UserRole } from '@/types/trading'
 
 // 역할별 권한 매핑
-const ROLE_PERMISSIONS = {
+const ROLE_PERMISSIONS: Record<UserRole, string[]> = {
   user: [],
   moderator: ['read_users', 'update_users'],
   admin: ['read_users', 'create_users', 'update_users', 'delete_users'],
   super_admin: ['*'], // 모든 권한
-} as const
+}
 
 function hasPermission(userRole: UserRole, requiredPermission: string): boolean {
   const permissions = ROLE_PERMISSIONS[userRole] || []
@@ -21,7 +21,7 @@ export async function GET(req: Request) {
   try {
     // 인증 및 권한 검증
     const authResult = await requireAuth(req)
-    if (!authResult.success) {
+    if (!authResult.success || !authResult.user) {
       return new NextResponse('Unauthorized', { status: 401 })
     }
 
@@ -85,7 +85,7 @@ export async function POST(req: Request) {
   try {
     // 인증 및 권한 검증
     const authResult = await requireAuth(req)
-    if (!authResult.success) {
+    if (!authResult.success || !authResult.user) {
       return new NextResponse('Unauthorized', { status: 401 })
     }
 

@@ -20,7 +20,6 @@ function getRedisClient(): Redis {
     const redisUrl = process.env.REDIS_URL || process.env.REDIS_URL_LOCAL || 'redis://localhost:6379';
 
     redisClient = new Redis(redisUrl, {
-      retryDelayOnFailover: 100,
       maxRetriesPerRequest: 3,
       lazyConnect: true,
       reconnectOnError: (err) => {
